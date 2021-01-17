@@ -1,0 +1,17 @@
+{    
+// [requisito: extensão java] especifica o local de instalação do java
+  // irrelevante caso esteja rodando em docker
+  //"java.home": "/usr/lib/jvm/java-11-openjdk", // windows usa barra invertida (ex: "C:\\java\\jdk11")
+  // [requisito: extensão java] compila arquivos java automaticamente após save
+  // NÃO UTILIZAR caso esteja rodando em docker
+  "java.configuration.updateBuildConfiguration": "automatic",
+  // esconde alguns arquivos de configuração gerados automaticamente
+  "files.exclude": {
+      "**/.classpath": true,
+      "**/.project": true,
+      "**/.settings": true,
+      "**/.factorypath": true
+  },
+  // [requisito: extensão gradle]
+  "gradle.nestedProjects": ["poligym"]
+}
