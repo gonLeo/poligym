@@ -15,7 +15,9 @@ import lombok.Data;
 
 @Entity
 @Data    
-public class User{
+public class User extends EntityBase{    
+    private static final long serialVersionUID = 1L;
+
     @GeneratedValue
     @Id
     private int id;
