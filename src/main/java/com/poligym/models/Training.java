@@ -56,17 +56,14 @@ public class Training extends EntityBase {
   private Exercices exercises;
 
   @NotBlank
-  @Size(max = 50)
   @Column(name = "weight")
   private float weight;
 
   @NotBlank
-  @Size(max = 50)
   @Column(name = "series")
   private float series;
 
   @NotBlank
-  @Size(max = 50)
   @Column(name = "training_validity")
   private Date training_validity;
 
