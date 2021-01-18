@@ -51,7 +51,7 @@ public class Training extends EntityBase {
 
   @JoinColumn(name = "user_id", nullable = false)
   @ManyToOne
-  private User user;
+  private User users;
 
   @JoinColumn(name = "exercise_id", nullable = false)
   @OneToMany(mappedBy = "Trainning", targetEntity = Exercices.class, cascade = CascadeType.ALL)

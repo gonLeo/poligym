@@ -22,7 +22,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compileOnly 'org.projectlombok:lombok:1.18.12'
 	compile("org.modelmapper:modelmapper:2.3.0")
-	annotationProcessor 'org.projectlombok:lombok:1.18.12'
+	annotationProcessor 'org.projectlombok:lombok:1.18.12'	
+    runtimeOnly 'org.postgresql:postgresql'
+
 }
 
 test {
