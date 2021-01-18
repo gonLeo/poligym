@@ -23,30 +23,30 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode
 public class TrainningDTO {
 
-    private int id;
+  private int id;
 
-    @NotNull(message = "User id cannot be a null")
-    private int user_id;
+  @NotNull(message = "User id cannot be a null")
+  private int user_id;
 
-    @NotNull(message = "Exercise id cannot be a null")
-    private int exercise_id;
+  @NotNull(message = "Exercise id cannot be a null")
+  private int exercise_id;
 
-    @NotNull(message = "Weight cannot be a null")
-    private float weight;
+  @NotNull(message = "Weight cannot be a null")
+  private float weight;
 
-    @NotNull(message = "series cannot be a null")
-    private float series;
+  @NotNull(message = "series cannot be a null")
+  private float series;
 
-    @NotNull(message = "repetitions cannot be a null")
-    private int repetitions;
+  @NotNull(message = "repetitions cannot be a null")
+  private int repetitions;
 
-    @NotNull(message = "training_validity cannot be a null")
-    private Date training_validity;
+  @NotNull(message = "training_validity cannot be a null")
+  private Date training_validity;
 
-    /**
+  /**
    * Method to convert an TrainningDTO to a Travel Entity
    * 
    * @author Pedro Vinicius
