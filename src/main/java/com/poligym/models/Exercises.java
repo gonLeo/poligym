@@ -20,13 +20,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Exercices extends EntityBase {
+public class Exercises extends EntityBase {
 
   private static final long serialVersionUID = 1980887079833339379L;
 
   @GeneratedValue
   @Id
-  private Integer id;
+  private int id;
 
   @Column(nullable = false, length = 255)
   private String equipment;
