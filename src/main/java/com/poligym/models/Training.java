@@ -47,24 +47,21 @@ public class Training extends EntityBase {
   @Column(name = "id")
   private int id;
 
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "user_id", nullable = false)
   @ManyToOne
   private User user;
 
-  @JoinColumn(name = "exercise_id")
+  @JoinColumn(name = "exercise_id", nullable = false)
   @OneToMany(mappedBy = "Trainning", targetEntity = Exercices.class, cascade = CascadeType.ALL)
   private Exercices exercises;
 
-  @NotBlank
-  @Column(name = "weight")
+  @Column(name = "weight", nullable = false)
   private float weight;
 
-  @NotBlank
-  @Column(name = "series")
+  @Column(name = "series", nullable = false)
   private float series;
 
-  @NotBlank
-  @Column(name = "training_validity")
+  @Column(name = "training_validity", nullable = false)
   private Date training_validity;
 
   /**
