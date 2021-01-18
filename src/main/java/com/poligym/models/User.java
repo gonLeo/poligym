@@ -1,59 +1,53 @@
 package com.poligym.models;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import org.springframework.data.annotation.LastModifiedDate;
+import com.poligym.dto.UserDTO;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
+import org.modelmapper.ModelMapper;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Data    
-public class User extends EntityBase{    
+
+public class User extends EntityBase {
     private static final long serialVersionUID = 1L;
 
-    @GeneratedValue
     @Id
+    @GeneratedValue
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "registrationCode")
+    @Column(name = "registrationCode", nullable = false, unique = true)
     private String registrationCode;
 
-    @Column(name = "registrationDate")
+    @Column(name = "registrationDate", nullable = false)
     private Date registrationDate;
 
-    @Column(name = "medicalCertificateValidate")
-    private Date validityOfCertificate;        
-    
-    @Column(name="createdAt")        
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date createdAt;
+    @Column(name = "medicalCertificateValidate", nullable = false)
+    private Date medicalCertificateValidate;
 
-    @Column(name="updatedAt")        
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date updatedAt;
-
-    @Column(name="removedAt")        
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date removedAt;
-
+    public UserDTO convertEntityToDTO() {
+        return new ModelMapper().map(this, UserDTO.class);
+    }
 }
