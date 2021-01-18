@@ -21,6 +21,7 @@ import org.modelmapper.ModelMapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -33,6 +34,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "Trainning")
 @Data
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class Training extends EntityBase {
