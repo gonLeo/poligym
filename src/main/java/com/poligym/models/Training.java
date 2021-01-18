@@ -1,10 +1,12 @@
 package com.poligym.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +17,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.poligym.dto.TrainningDTO;
 
 import org.modelmapper.ModelMapper;
@@ -49,13 +52,13 @@ public class Training extends EntityBase {
   @Column(name = "id")
   private int id;
 
-  @JoinColumn(name = "user_id", nullable = false)
-  @ManyToOne
-  private User user;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JsonBackReference
+  private User users;
 
-  @JoinColumn(name = "exercise_id", nullable = false)
-  @OneToMany(mappedBy = "Trainning", targetEntity = Exercices.class, cascade = CascadeType.ALL)
-  private Exercices exercises;
+  @JoinColumn(name = "trainning_id", nullable = false)
+  @OneToMany(targetEntity = Exercises.class, cascade = CascadeType.ALL)
+  private List<Exercises> exercises;
 
   @Column(name = "weight", nullable = false)
   private float weight;
