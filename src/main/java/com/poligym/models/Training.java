@@ -63,6 +63,9 @@ public class Training extends EntityBase {
   @Column(name = "series", nullable = false)
   private float series;
 
+  @Column(name = "repetitions", nullable = false)
+  private int repetitions;
+
   @Column(name = "training_validity", nullable = false)
   private Date training_validity;
 
@@ -72,7 +75,7 @@ public class Training extends EntityBase {
    * @author Pedro Vinicius
    * @since 17/01/2021
    * 
-   * @param person
+   * @param trainning
    * @return an TrainningDTO object
    */
 
