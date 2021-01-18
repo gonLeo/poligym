@@ -12,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 import com.poligym.dto.TrainningDTO;
 
@@ -34,10 +32,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "Trainning")
 @Data
-@EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
 @NoArgsConstructor
-public class Training extends EntityBase {
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class Trainning extends EntityBase {
 
   /**
    *
