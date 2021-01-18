@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.poligym.dto.ExercisesDTO;
+
+import org.modelmapper.ModelMapper;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,6 +51,10 @@ public class Exercices extends EntityBase {
     stringBuffer.append(this.description);
 
     return stringBuffer.toString();
+  }
+
+  public ExercisesDTO convertEntityToDTO() {
+    return new ModelMapper().map(this, ExercisesDTO.class);
   }
 
 }
