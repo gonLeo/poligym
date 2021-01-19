@@ -15,12 +15,12 @@ import lombok.Data;
 
 @Data
 @MappedSuperclass
-public class EntityBase implements Serializable {    
+public class EntityBase implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
     private Date createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -32,5 +32,5 @@ public class EntityBase implements Serializable {
     @UpdateTimestamp
     @Column(nullable = true)
     private Date removedAt;
-    
+
 }
