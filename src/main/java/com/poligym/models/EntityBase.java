@@ -29,8 +29,7 @@ public class EntityBase implements Serializable {
     private Date updatedAt;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @UpdateTimestamp
-    @Column(nullable = true)
+    // @UpdateTimestamp
     private Date removedAt;
 
 }
