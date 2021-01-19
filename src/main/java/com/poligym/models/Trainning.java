@@ -5,16 +5,16 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.poligym.dto.TrainningDTO;
 
 import org.modelmapper.ModelMapper;
@@ -34,10 +34,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "Trainning")
 @Data
-@EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
 @NoArgsConstructor
-public class Training extends EntityBase {
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class Trainning extends EntityBase {
 
   /**
    *
@@ -49,13 +49,16 @@ public class Training extends EntityBase {
   @Column(name = "id")
   private int id;
 
-  @JoinColumn(name = "user_id", nullable = false)
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JsonBackReference
   private User users;
 
   @JoinColumn(name = "exercise_id", nullable = false)
-  @OneToMany(mappedBy = "Trainning", targetEntity = Exercices.class, cascade = CascadeType.ALL)
-  private Exercices exercises;
+  @OneToOne(mappedBy = "Trainning", targetEntity = Exercises.class, cascade = CascadeType.ALL)
+  private Exercises exercises;
+
+  @Column(name = "section", nullable = false)
+  private String section;
 
   @Column(name = "weight", nullable = false)
   private float weight;

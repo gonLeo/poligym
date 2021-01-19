@@ -4,6 +4,8 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+/.gradle
+/.settings
 
 ### STS ###
 .apt_generated
@@ -17,6 +19,8 @@ build/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
+.settings/org.eclipse.buildship.core.prefs
+
 
 ### IntelliJ IDEA ###
 .idea
@@ -36,3 +40,10 @@ out/
 
 ### FIle VS Code ###
 .vscode/
+
+
+# others #
+*.lock
+*.prefs
+*.bin
+
