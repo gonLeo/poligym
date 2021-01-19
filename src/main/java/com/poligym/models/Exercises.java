@@ -8,6 +8,7 @@ import javax.persistence.Id;
 
 import com.poligym.dto.ExercisesDTO;
 
+import org.hibernate.annotations.SQLDelete;
 import org.modelmapper.ModelMapper;
 
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@SQLDelete(sql = "UPDATE exercises SET removed_at=now() WHERE id=?")
 public class Exercises extends EntityBase {
 
   private static final long serialVersionUID = 1980887079833339379L;
@@ -49,6 +51,12 @@ public class Exercises extends EntityBase {
     stringBuffer.append(this.muscleGroup);
     stringBuffer.append("\n Description: ");
     stringBuffer.append(this.description);
+    stringBuffer.append("\n created: ");
+    stringBuffer.append(this.getCreatedAt());
+    stringBuffer.append("\n Updated: ");
+    stringBuffer.append(this.getRemovedAt());
+    stringBuffer.append("\n Removed: ");
+    stringBuffer.append(this.getRemovedAt());
 
     return stringBuffer.toString();
   }
@@ -58,3 +66,8 @@ public class Exercises extends EntityBase {
   }
 
 }
+
+/*
+ * "equipment" : "Barra fixa", "muscleGroup": "Biceps", "description":
+ * "Tá Saindo da jaula o monstro"
+ */
