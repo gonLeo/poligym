@@ -1,9 +1,11 @@
 package com.poligym.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.poligym.models.Exercises;
 import com.poligym.models.Trainning;
 
 import org.modelmapper.ModelMapper;
@@ -29,10 +31,10 @@ public class TrainningDTO {
   private int id;
 
   @NotNull(message = "User id cannot be a null")
-  private int user_id;
+  private int users;
 
   @NotNull(message = "Exercise id cannot be a null")
-  private int exercise_id;
+  private List<Exercises> exercises;
 
   @NotNull(message = "Weight cannot be a null")
   private float weight;

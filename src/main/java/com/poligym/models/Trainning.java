@@ -54,7 +54,7 @@ public class Trainning extends EntityBase {
   @JsonBackReference
   private User users;
 
-  @JoinColumn(name = "trainning_id", nullable = false)
+  @JoinColumn(name = "trainning_id")
   @OneToMany(targetEntity = Exercises.class, cascade = CascadeType.ALL)
   private List<Exercises> exercises;
 

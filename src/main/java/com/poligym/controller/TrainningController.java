@@ -2,15 +2,16 @@ package com.poligym.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import javax.transaction.Transaction;
 import javax.validation.Valid;
 
 import com.poligym.dto.TrainningDTO;
+import com.poligym.models.Exercises;
 import com.poligym.models.Trainning;
 import com.poligym.repository.TrainningRepository;
+import com.poligym.repository.UserRepository;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javassist.expr.NewArray;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 /**
  * SpringBoot RestController that creates all service end-points related to the trainning.
@@ -34,6 +37,9 @@ import javassist.expr.NewArray;
 public class TrainningController {
 
     private TrainningRepository trainningRepository;
+
+    @Autowired
+    private UsersRepository UserRepository;
 
     @Autowired
     public TrainningController(TrainningRepository trainningRepository) {
@@ -97,9 +103,27 @@ public class TrainningController {
         Trainning trainning = dto.convertDTOToEntity();
         Trainning trainningToCreate = trainningRepository.save(trainning);
 
-        TrainningDTO dtoSaved = trainningToCreate.convertEntityToDTO();
+        TrainningDTO returnValue = trainningToCreate.convertEntityToDTO();
 
-        return new ResponseEntity<>(dtoSaved, HttpStatus.CREATED);
+        return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
+     }
+
+     @PutMapping(value="/{id}")
+     public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @RequestBody TrainningDTO dto) throws Exception {
+         //TODO: process PUT request
+         
+         Trainning trainning = dto.convertDTOToEntity();
+
+         Optional<Trainning> getUser = usersRepository.findById(dto.getUsers());
+         
+         Optional<Exercises> getExercises = exercisesRepository.findById(dto)
+
+         if (!getUser.isPresent()) {
+            new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+         }
+
+
+         
      }
 
      

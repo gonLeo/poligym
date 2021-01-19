@@ -8,7 +8,9 @@ import com.poligym.models.Trainning;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface TrainningRepository extends JpaRepository<Trainning, Long>{
+public interface TrainningRepository extends JpaRepository<Trainning, Integer>{
     
+    Optional<Trainning> findById(int id);
+
     Optional<List<Trainning>> findByUserId(int id);
 }
