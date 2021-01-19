@@ -1,13 +1,17 @@
 
 package com.poligym.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import com.poligym.dto.ExercisesDTO;
 
+import org.hibernate.annotations.SQLDelete;
 import org.modelmapper.ModelMapper;
 
 import lombok.AllArgsConstructor;
@@ -20,6 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@SQLDelete(sql = "UPDATE exercises SET removed_at=now() WHERE id=?")
 public class Exercises extends EntityBase {
 
   private static final long serialVersionUID = 1980887079833339379L;
@@ -31,11 +36,12 @@ public class Exercises extends EntityBase {
   @Column(nullable = false, length = 255)
   private String equipment;
 
-  @Column(unique = true, nullable = false, length = 255)
-  private String muscleGroup;
-
   @Column(nullable = false, length = 255)
   private String description;
+
+  @JoinColumn(name = "muscularGroup_id")
+  @OneToOne(targetEntity = MuscularGroup.class, cascade = CascadeType.ALL)
+  private MuscularGroup muscularGroup;
 
   @Override
   public String toString() {
@@ -46,9 +52,15 @@ public class Exercises extends EntityBase {
     stringBuffer.append("\n Equipment: ");
     stringBuffer.append(this.equipment);
     stringBuffer.append("\n Muscle Group: ");
-    stringBuffer.append(this.muscleGroup);
+    stringBuffer.append(this.muscularGroup);
     stringBuffer.append("\n Description: ");
     stringBuffer.append(this.description);
+    stringBuffer.append("\n created: ");
+    stringBuffer.append(this.getCreatedAt());
+    stringBuffer.append("\n Updated: ");
+    stringBuffer.append(this.getRemovedAt());
+    stringBuffer.append("\n Removed: ");
+    stringBuffer.append(this.getRemovedAt());
 
     return stringBuffer.toString();
   }
@@ -58,3 +70,8 @@ public class Exercises extends EntityBase {
   }
 
 }
+
+/*
+ * "equipment" : "Barra fixa", "muscleGroup": "Biceps", "description":
+ * "Tá Saindo da jaula o monstro"
+ */
