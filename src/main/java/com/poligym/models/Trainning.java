@@ -1,10 +1,12 @@
 package com.poligym.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.poligym.dto.TrainningDTO;
 
 import org.modelmapper.ModelMapper;
@@ -32,10 +35,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "Trainning")
 @Data
-@EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
 @NoArgsConstructor
-public class Training extends EntityBase {
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class Trainning extends EntityBase {
 
   /**
    *
@@ -47,9 +50,9 @@ public class Training extends EntityBase {
   @Column(name = "id")
   private int id;
 
-  @JoinColumn(name = "user_id", nullable = false)
-  @ManyToOne
-  private User user;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JsonBackReference
+  private User users;
 
   @JoinColumn(name = "exercise_id", nullable = false)
   @OneToOne(mappedBy = "Trainning", targetEntity = Exercices.class, cascade = CascadeType.ALL)

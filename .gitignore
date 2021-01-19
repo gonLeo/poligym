@@ -36,3 +36,9 @@ out/
 
 ### FIle VS Code ###
 .vscode/
+
+# others #
+*.lock
+*.prefs
+*.bin
+
