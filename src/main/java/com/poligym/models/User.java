@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.poligym.dto.UserDTO;
 
@@ -16,12 +17,12 @@ import lombok.AllArgsConstructor;
 
 import org.modelmapper.ModelMapper;
 
+@Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-
 public class User extends EntityBase {
     private static final long serialVersionUID = 1L;
 
