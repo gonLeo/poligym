@@ -10,10 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 import com.poligym.dto.TrainningDTO;
 
@@ -54,7 +52,7 @@ public class Training extends EntityBase {
   private User user;
 
   @JoinColumn(name = "exercise_id", nullable = false)
-  @OneToMany(mappedBy = "Trainning", targetEntity = Exercices.class, cascade = CascadeType.ALL)
+  @OneToOne(mappedBy = "Trainning", targetEntity = Exercices.class, cascade = CascadeType.ALL)
   private Exercices exercises;
 
   @Column(name = "weight", nullable = false)
