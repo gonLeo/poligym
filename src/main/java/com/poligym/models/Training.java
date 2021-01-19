@@ -55,6 +55,9 @@ public class Training extends EntityBase {
   @OneToOne(mappedBy = "Trainning", targetEntity = Exercices.class, cascade = CascadeType.ALL)
   private Exercices exercises;
 
+  @Column(name = "section", nullable = false)
+  private String section;
+
   @Column(name = "weight", nullable = false)
   private float weight;
 
