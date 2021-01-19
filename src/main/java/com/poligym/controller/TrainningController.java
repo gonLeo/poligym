@@ -17,6 +17,8 @@ import com.poligym.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +44,7 @@ public class TrainningController {
     private TrainningRepository trainningRepository;
 
     @Autowired
-    private UsersRepository UserRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private ExercisesRepository exercisesRepository;
@@ -115,7 +117,7 @@ public class TrainningController {
      }
 
      @PutMapping(value="/{id}")
-     public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @RequestBody TrainningDTO dto) throws Exception {
+     public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @Validated @RequestBody TrainningDTO dto) throws Exception {
          //TODO: process PUT request
          
         //Busca se o treino passado pelo Id existe no banco
@@ -125,26 +127,24 @@ public class TrainningController {
             new ResponseEntity<>("Train not found", HttpStatus.BAD_REQUEST);
          }
 
-         //Caso sim, vamos converter o treino recebi pelo Body para Entidade
-         Trainning trainning = dto.convertDTOToEntity();
-
          //Precisamos verificar se o treino que o usuario esta tentando atualizar, contém os dados corretos no banco, como:
          // Verificar se o User existe
 
-         Optional<User> getUser = usersRepository.findById(dto.getUsers());
+         Optional<User> getUser = userRepository.findById(dto.getUsers_id());
 
          if (!getUser.isPresent()) {
             new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
          }
 
          //Verificar se o exercicio existe
-         Optional<Exercises> getExercises = exercisesRepository.findById(dto.getExercises());
+         Optional<Exercises> getExercises = exercisesRepository.findById(dto.getExercises_id());
 
          if (!getExercises.isPresent()) {
             new ResponseEntity<>("Exercise not found", HttpStatus.BAD_REQUEST);
          }
 
          Trainning trainningUpdate = new Trainning();
+         //Caso sim, vamos converter o treino recebi pelo Body para Entidade
          Trainning trainningBody = dto.convertDTOToEntity();
 
          trainningUpdate.setUsers(trainningBody.getUsers());
@@ -160,6 +160,16 @@ public class TrainningController {
          TrainningDTO returnValue = valueSave.convertEntityToDTO();
 
          return new ResponseEntity<>(returnValue, HttpStatus.OK);
+     }
+
+     @DeleteMapping(path = "/{id}")
+     public ResponseEntity<Optional<TrainningDTO>> delete(@PathVariable int id){
+         try {
+            trainningRepository.deleteById(id);
+            return new ResponseEntity<Optional<TrainningDTO>>(HttpStatus.OK);
+         } catch (Exception err) {
+            return new ResponseEntity<Optional<TrainningDTO>>(HttpStatus.NOT_FOUND);
+         }
      }
 
      
