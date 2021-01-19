@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import com.poligym.models.Exercises;
 import com.poligym.models.Trainning;
 
 import org.modelmapper.ModelMapper;
@@ -32,7 +33,7 @@ public class TrainningDTO {
   private int users_id;
 
   @NotNull(message = "Exercise id cannot be a null")
-  private int exercise_id;
+  private Exercises exercises;
 
   @NotNull(message = "Section cannot be a null")
   private String section;

@@ -2,7 +2,6 @@ package com.poligym.models;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -50,11 +49,12 @@ public class Trainning extends EntityBase {
   private int id;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "users_id", nullable = false)
   @JsonBackReference
   private User users;
 
-  @JoinColumn(name = "exercise_id", nullable = false)
-  @OneToOne(mappedBy = "Trainning", targetEntity = Exercises.class, cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "exercises_id", nullable = false)
   private Exercises exercises;
 
   @Column(name = "section", nullable = false)
