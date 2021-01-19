@@ -20,7 +20,7 @@ public class EntityBase implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    @Column(nullable = false, columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP")
+    @Column(nullable = false)
     private Date createdAt;
 
     @Temporal(TemporalType.TIMESTAMP)
