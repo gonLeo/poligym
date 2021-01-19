@@ -27,7 +27,7 @@ public class MuscularGroup extends EntityBase {
   @Id
   private int id;
 
-  @Column(nullable = false, length = 255)
+  @Column(unique = true, nullable = false, length = 255)
   private String description;
 
   public MuscularGroupDTO convertEntityToDTO() {
