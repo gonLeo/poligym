@@ -28,9 +28,14 @@ public class ExercisesController {
   ExercisesRepository exercisesRepository;
 
   @GetMapping(value = "/{id}")
-  public Exercises show(@PathVariable Integer id) {
-    Exercises exercises = exercisesRepository.getOne(id);
-    return exercises;
+  public ResponseEntity<Optional<Exercises>> show(@PathVariable Integer id) {
+    Optional<Exercises> exercises;
+    try {
+      exercises = exercisesRepository.findById(id);
+      return new ResponseEntity<Optional<Exercises>>(exercises, HttpStatus.OK);
+    } catch (Exception err) {
+      return new ResponseEntity<Optional<Exercises>>(HttpStatus.NOT_FOUND);
+    }
   }
 
   @GetMapping()
@@ -43,11 +48,6 @@ public class ExercisesController {
   public ResponseEntity<Exercises> save(@RequestBody ExercisesDTO exercisesDTO) {
 
     Exercises exercises = exercisesDTO.convertEntityToExercises();
-
-    System.out.println("\n");
-    System.out.println(exercises.toString());
-    System.out.println("\n");
-
     exercisesRepository.save(exercises);
 
     return new ResponseEntity<>(exercises, HttpStatus.OK);
@@ -55,14 +55,16 @@ public class ExercisesController {
 
   @PutMapping(path = "/{id}")
   public ResponseEntity<Exercises> update(@RequestBody ExercisesDTO exercisesDTO, @PathVariable Integer id) {
-    Exercises exercises = exercisesRepository.getOne(id);
-    Exercises updated = exercisesDTO.convertEntityToExercises();
-    exercises.setEquipment(updated.getEquipment());
-    exercises.setMuscleGroup(updated.getMuscleGroup());
-    exercises.setDescription(updated.getDescription());
 
-    exercisesRepository.save(exercises);
-    return ResponseEntity.status(HttpStatus.OK).body(exercises);
+    return exercisesRepository.findById(id).map(exercises -> {
+      Exercises updated = exercisesDTO.convertEntityToExercises();
+      exercises.setEquipment(updated.getEquipment());
+      exercises.setMuscleGroup(updated.getMuscleGroup());
+      exercises.setDescription(updated.getDescription());
+
+      Exercises exerciseUpdated = exercisesRepository.save(exercises);
+      return ResponseEntity.status(HttpStatus.OK).body(exerciseUpdated);
+    }).orElse(ResponseEntity.notFound().build());
   };
 
   @DeleteMapping(path = "/{id}")
@@ -71,7 +73,9 @@ public class ExercisesController {
       // Exercises exercisesDelete = exercisesRepository.getOne(id);
       exercisesRepository.deleteById(id);
       return new ResponseEntity<Optional<Exercises>>(HttpStatus.OK);
-    } catch (NoSuchElementException err) {
+    } catch (Exception err) {
+      System.out.println("\n\n\n err \n\n\n");
+      System.out.println(err);
       return new ResponseEntity<Optional<Exercises>>(HttpStatus.NOT_FOUND);
     }
   }
