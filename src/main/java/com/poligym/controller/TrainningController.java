@@ -38,8 +38,8 @@ public class TrainningController {
 
     private TrainningRepository trainningRepository;
 
-    @Autowired
-    private UsersRepository UserRepository;
+    // @Autowired
+    // private UsersRepository UserRepository;
 
     @Autowired
     public TrainningController(TrainningRepository trainningRepository) {
@@ -97,51 +97,51 @@ public class TrainningController {
      * @throws
      */
 
-     @PostMapping
-     public ResponseEntity<TrainningDTO> create(@Valid @RequestBody TrainningDTO dto) {
+    //  @PostMapping
+    //  public ResponseEntity<TrainningDTO> create(@Valid @RequestBody TrainningDTO dto) {
         
-        Trainning trainning = dto.convertDTOToEntity();
-        Trainning trainningToCreate = trainningRepository.save(trainning);
+    //     Trainning trainning = dto.convertDTOToEntity();
+    //     Trainning trainningToCreate = trainningRepository.save(trainning);
 
-        TrainningDTO returnValue = trainningToCreate.convertEntityToDTO();
+    //     TrainningDTO returnValue = trainningToCreate.convertEntityToDTO();
 
-        return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
-     }
+    //     return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
+    //  }
 
-     @PutMapping(value="/{id}")
-     public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @RequestBody TrainningDTO dto) throws Exception {
-         //TODO: process PUT request
+    //  @PutMapping(value="/{id}")
+    //  public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @RequestBody TrainningDTO dto) throws Exception {
+    //      //TODO: process PUT request
          
-        //Busca se o treino passado pelo Id existe no banco
-         Optional<Trainning> getBanco = trainningRepository.findById(id);
+    //     //Busca se o treino passado pelo Id existe no banco
+    //      Optional<Trainning> getBanco = trainningRepository.findById(id);
 
-         if (!getBanco.isPresent()){
-            new ResponseEntity<>("Train not found", HttpStatus.BAD_REQUEST);
-         }
+    //      if (!getBanco.isPresent()){
+    //         new ResponseEntity<>("Train not found", HttpStatus.BAD_REQUEST);
+    //      }
 
-         //Caso sim, vamos converter o treino recebi pelo Body para Entidade
-         Trainning trainning = dto.convertDTOToEntity();
+    //      //Caso sim, vamos converter o treino recebi pelo Body para Entidade
+    //      Trainning trainning = dto.convertDTOToEntity();
 
-         //Precisamos verificar se o treino que o usuario esta tentando atualizar, contém os dados corretos no banco, como:
-         // Verificar se o User existe
+    //      //Precisamos verificar se o treino que o usuario esta tentando atualizar, contém os dados corretos no banco, como:
+    //      // Verificar se o User existe
 
-         Optional<Trainning> getUser = usersRepository.findById(dto.getUsers());
+    //      Optional<Trainning> getUser = usersRepository.findById(dto.getUsers());
 
-         if (!getUser.isPresent()) {
-            new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
-         }
+    //      if (!getUser.isPresent()) {
+    //         new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+    //      }
 
 
-         //Verificar se o exercicio existe
-         Optional<Exercises> getExercises = exercisesRepository.findById(dto.getExercises());
+    //      //Verificar se o exercicio existe
+    //      Optional<Exercises> getExercises = exercisesRepository.findById(dto.getExercises());
 
-         if (!getExercises.isPresent()) {
-            new ResponseEntity<>("Exercise not found", HttpStatus.BAD_REQUEST);
-         }
+    //      if (!getExercises.isPresent()) {
+    //         new ResponseEntity<>("Exercise not found", HttpStatus.BAD_REQUEST);
+    //      }
 
 
          
-     }
+    //  }
 
      
     

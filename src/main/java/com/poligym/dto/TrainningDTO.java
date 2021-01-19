@@ -1,7 +1,6 @@
 package com.poligym.dto;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -34,7 +33,7 @@ public class TrainningDTO {
   private int users_id;
 
   @NotNull(message = "Exercise id cannot be a null")
-  private List<Exercises> exercises;
+  private Exercises exercises;
 
   @NotNull(message = "Section cannot be a null")
   private String section;
