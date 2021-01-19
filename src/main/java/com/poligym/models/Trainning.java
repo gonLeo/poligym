@@ -1,7 +1,6 @@
 package com.poligym.models;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -55,8 +54,8 @@ public class Trainning extends EntityBase {
   private User users;
 
   @JoinColumn(name = "exercise_id", nullable = false)
-  @OneToOne(mappedBy = "Trainning", targetEntity = Exercices.class, cascade = CascadeType.ALL)
-  private Exercices exercises;
+  @OneToOne(mappedBy = "Trainning", targetEntity = Exercises.class, cascade = CascadeType.ALL)
+  private Exercises exercises;
 
   @Column(name = "section", nullable = false)
   private String section;
