@@ -31,10 +31,13 @@ public class TrainningDTO {
   private int id;
 
   @NotNull(message = "User id cannot be a null")
-  private int users;
+  private int users_id;
 
   @NotNull(message = "Exercise id cannot be a null")
   private List<Exercises> exercises;
+
+  @NotNull(message = "Section cannot be a null")
+  private String section;
 
   @NotNull(message = "Weight cannot be a null")
   private float weight;

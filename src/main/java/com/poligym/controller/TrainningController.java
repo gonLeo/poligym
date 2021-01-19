@@ -112,14 +112,31 @@ public class TrainningController {
      public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @RequestBody TrainningDTO dto) throws Exception {
          //TODO: process PUT request
          
+        //Busca se o treino passado pelo Id existe no banco
+         Optional<Trainning> getBanco = trainningRepository.findById(id);
+
+         if (!getBanco.isPresent()){
+            new ResponseEntity<>("Train not found", HttpStatus.BAD_REQUEST);
+         }
+
+         //Caso sim, vamos converter o treino recebi pelo Body para Entidade
          Trainning trainning = dto.convertDTOToEntity();
 
+         //Precisamos verificar se o treino que o usuario esta tentando atualizar, contém os dados corretos no banco, como:
+         // Verificar se o User existe
+
          Optional<Trainning> getUser = usersRepository.findById(dto.getUsers());
-         
-         Optional<Exercises> getExercises = exercisesRepository.findById(dto)
 
          if (!getUser.isPresent()) {
             new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+         }
+
+
+         //Verificar se o exercicio existe
+         Optional<Exercises> getExercises = exercisesRepository.findById(dto.getExercises());
+
+         if (!getExercises.isPresent()) {
+            new ResponseEntity<>("Exercise not found", HttpStatus.BAD_REQUEST);
          }
 
 
