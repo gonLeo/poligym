@@ -4,14 +4,9 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
-import com.poligym.models.Exercises;
 import com.poligym.models.Trainning;
-import com.poligym.models.User;
-import com.poligym.repository.ExercisesRepository;
-import com.poligym.repository.UserRepository;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,20 +26,13 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class TrainningDTO {
 
-  @Autowired
-  private UserRepository userRepository;
-
-  @Autowired
-  private ExercisesRepository exercisesRepository;
-
-
   private int id;
 
   @NotNull(message = "User id cannot be a null")
-  private int users_id;
+  private int usersId;
 
   @NotNull(message = "Exercise id cannot be a null")
-  private int exercises_id;
+  private int exercisesId;
 
   @NotNull(message = "Section cannot be a null")
   private String section;
@@ -72,23 +60,7 @@ public class TrainningDTO {
    */
 
   public Trainning convertDTOToEntity() {
-
-    System.out.println("DTO: " + this.exercises_id);
-
-    Trainning trainning = new ModelMapper().map(this, Trainning.class);
-
-    System.out.println("ENTITY: " + trainning.getSeries());
-
-    Exercises exercises = exercisesRepository.findById(this.exercises_id);
-
-    System.out.println("EXERCICIO: " + exercises.getDescription());
-    User users = userRepository.findById(this.users_id);
-
-    trainning.setUsers(users);
-    trainning.setExercises(exercises);
-
-    return trainning;
-
+    return new ModelMapper().map(this, Trainning.class);
   }
 
 }

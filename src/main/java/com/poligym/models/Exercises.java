@@ -31,6 +31,7 @@ public class Exercises extends EntityBase {
 
   @GeneratedValue
   @Id
+  @Column(name = "id")
   private int id;
 
   @Column(nullable = true, length = 255)

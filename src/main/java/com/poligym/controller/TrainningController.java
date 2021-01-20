@@ -98,18 +98,8 @@ public class TrainningController {
 
      @PostMapping
      public ResponseEntity<TrainningDTO> create(@Valid @RequestBody TrainningDTO dto) {
-         // System.out.print("DTO: " + dto);
          Trainning trainning = dto.convertDTOToEntity();
 
-         // Exercises exercises = exercisesRepository.findById(dto.getExercises_id());
-         // User users = userRepository.getOne(dto.getUsers_id());
-
-         // trainning.setExercises(exercises);
-         // trainning.setUsers(users);
-         
-         // System.out.print("ENTIDADE: " + trainning.getUsers());
-
-         // return "Opa";
         Trainning trainningToCreate = trainningRepository.save(trainning);
 
         TrainningDTO returnValue = trainningToCreate.convertEntityToDTO();
@@ -117,49 +107,49 @@ public class TrainningController {
         return new ResponseEntity<TrainningDTO>(returnValue, HttpStatus.CREATED);
      }
 
-   //   @PutMapping(value="/{id}")
-   //   public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @Validated @RequestBody TrainningDTO dto) throws Exception {
+     @PutMapping(value="/{id}")
+     public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @Validated @RequestBody TrainningDTO dto) throws Exception {
          
-   //      //Busca se o treino passado pelo Id existe no banco
-   //       Optional<Trainning> getBanco = trainningRepository.findById(id);
+        //Busca se o treino passado pelo Id existe no banco
+         Optional<Trainning> getBanco = trainningRepository.findById(id);
 
-   //       if (!getBanco.isPresent()){
-   //          new ResponseEntity<>("Train not found", HttpStatus.BAD_REQUEST);
-   //       }
+         if (!getBanco.isPresent()){
+            new ResponseEntity<>("Train not found", HttpStatus.BAD_REQUEST);
+         }
 
-   //       //Precisamos verificar se o treino que o usuario esta tentando atualizar, contém os dados corretos no banco, como:
-   //       // Verificar se o User existe
-   //       Optional<User> getUser = userRepository.findById(dto.getUsers_id());
+         //Precisamos verificar se o treino que o usuario esta tentando atualizar, contém os dados corretos no banco, como:
+         // Verificar se o User existe
+         Optional<User> getUser = userRepository.findById(dto.getUsers_id());
 
-   //       if (!getUser.isPresent()) {
-   //          new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
-   //       }
+         if (!getUser.isPresent()) {
+            new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+         }
 
-   //       //Verificar se o exercicio existe
-   //       Optional<Exercises> getExercises = exercisesRepository.findById(dto.getExercises_id());
+         //Verificar se o exercicio existe
+         Optional<Exercises> getExercises = exercisesRepository.findById(dto.getExercises_id());
 
-   //       if (!getExercises.isPresent()) {
-   //          new ResponseEntity<>("Exercise not found", HttpStatus.BAD_REQUEST);
-   //       }
+         if (!getExercises.isPresent()) {
+            new ResponseEntity<>("Exercise not found", HttpStatus.BAD_REQUEST);
+         }
 
-   //       Trainning trainningUpdate = new Trainning();
-   //       //Caso sim, vamos converter o treino recebi pelo Body para Entidade
-   //       Trainning trainningBody = dto.convertDTOToEntity();
+         Trainning trainningUpdate = new Trainning();
+         //Caso sim, vamos converter o treino recebi pelo Body para Entidade
+         Trainning trainningBody = dto.convertDTOToEntity();
 
-   //       trainningUpdate.setUsers(trainningBody.getUsers());
-   //       trainningUpdate.setExercises(trainningBody.getExercises());
-   //       trainningUpdate.setSection(trainningBody.getSection());
-   //       trainningUpdate.setSeries(trainningBody.getSeries());
-   //       trainningUpdate.setRepetitions(trainningBody.getRepetitions());
-   //       trainningUpdate.setWeight(trainningBody.getWeight());
-   //       trainningUpdate.setTrainning_validity(trainningBody.getTrainning_validity());
+         trainningUpdate.setUsers(trainningBody.getUsers());
+         trainningUpdate.setExercises(trainningBody.getExercises());
+         trainningUpdate.setSection(trainningBody.getSection());
+         trainningUpdate.setSeries(trainningBody.getSeries());
+         trainningUpdate.setRepetitions(trainningBody.getRepetitions());
+         trainningUpdate.setWeight(trainningBody.getWeight());
+         trainningUpdate.setTrainning_validity(trainningBody.getTrainning_validity());
          
 
-   //       Trainning valueSave = trainningRepository.save(trainningUpdate);
-   //       TrainningDTO returnValue = valueSave.convertEntityToDTO();
+         Trainning valueSave = trainningRepository.save(trainningUpdate);
+         TrainningDTO returnValue = valueSave.convertEntityToDTO();
 
-   //       return new ResponseEntity<>(returnValue, HttpStatus.OK);
-   //   }
+         return new ResponseEntity<>(returnValue, HttpStatus.OK);
+     }
 
      @DeleteMapping(path = "/{id}")
      public ResponseEntity<Optional<TrainningDTO>> delete(@PathVariable int id){
