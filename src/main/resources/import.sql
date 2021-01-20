@@ -1,0 +1,1 @@
+INSERT INTO exercises(description, equipment) values('Teste', 'Cadeira extensora');
