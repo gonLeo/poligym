@@ -2,10 +2,10 @@ package com.poligym.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import com.poligym.dto.ExercisesDTO;
-import com.poligym.models.Exercises;
-import com.poligym.repository.ExercisesRepository;
+import com.poligym.dto.MuscularGroupDTO;
+import com.poligym.models.MuscularGroup;
 import com.poligym.repository.MuscularGroupRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/muscular-group")
@@ -27,52 +28,55 @@ public class MuscularGroupController {
   MuscularGroupRepository muscularGroupRepository;
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<Optional<Exercises>> show(@PathVariable Integer id) {
-    Optional<MuscularGroup> muscularGroup;
-    try {
-      muscularGroup = muscularGroupRepository.findById(id);
-      return new ResponseEntity<Optional<Exercises>>(exercises, HttpStatus.OK);
-    } catch (Exception err) {
-      return new ResponseEntity<Optional<Exercises>>(HttpStatus.NOT_FOUND);
-    }
+  public ResponseEntity<MuscularGroup> show(@PathVariable Integer id) {
+    return muscularGroupRepository.findById(id).map(muscularGroup -> {
+      return ResponseEntity.status(HttpStatus.OK).body(muscularGroup);
+    }).orElse(ResponseEntity.notFound().build());
   }
 
   @GetMapping()
-  public List<Exercises> index() {
-    List<Exercises> exercises = muscularGroupRepository.findAll();
+  public List<MuscularGroup> index() {
+    List<MuscularGroup> exercises = muscularGroupRepository.findAll().stream().filter(s -> s.getRemovedAt() == null)
+        .collect(Collectors.toList());
+
+    return exercises;
+  }
+
+  @GetMapping(value = "/all")
+  public List<MuscularGroup> indexAll() {
+    List<MuscularGroup> exercises = muscularGroupRepository.findAll();
     return exercises;
   }
 
   @PostMapping()
-  public ResponseEntity<Exercises> save(@RequestBody ExercisesDTO exercisesDTO) {
+  public ResponseEntity<MuscularGroup> save(@RequestBody MuscularGroupDTO muscularGroupDTO) {
 
-    Exercises exercises = exercisesDTO.convertEntityToExercises();
-    muscularGroupRepository.save(exercises);
+    MuscularGroup muscularGroup = muscularGroupDTO.convertEntityToExercises();
+    muscularGroupRepository.save(muscularGroup);
 
-    return new ResponseEntity<>(exercises, HttpStatus.OK);
+    return new ResponseEntity<>(muscularGroup, HttpStatus.OK);
   }
 
   @PutMapping(path = "/{id}")
-  public ResponseEntity<Exercises> update(@RequestBody ExercisesDTO exercisesDTO, @PathVariable Integer id) {
+  public ResponseEntity<MuscularGroup> update(@RequestBody MuscularGroupDTO muscularGroupDTO,
+      @PathVariable Integer id) {
 
-    return muscularGroupRepository.findById(id).map(exercises -> {
-      Exercises updated = exercisesDTO.convertEntityToExercises();
-      exercises.setEquipment(updated.getEquipment());
-      exercises.setMuscularGroup(updated.getMuscularGroup());
-      exercises.setDescription(updated.getDescription());
+    return muscularGroupRepository.findById(id).map(muscularGroup -> {
+      MuscularGroup updated = muscularGroupDTO.convertEntityToExercises();
+      muscularGroup.setDescription(updated.getDescription());
 
-      Exercises exerciseUpdated = muscularGroupRepository.save(exercises);
-      return ResponseEntity.status(HttpStatus.OK).body(exerciseUpdated);
+      MuscularGroup muscularGroupUpdated = muscularGroupRepository.save(muscularGroup);
+      return ResponseEntity.status(HttpStatus.OK).body(muscularGroupUpdated);
     }).orElse(ResponseEntity.notFound().build());
   };
 
   @DeleteMapping(path = "/{id}")
-  public ResponseEntity<Optional<Exercises>> update(@PathVariable Integer id) {
+  public ResponseEntity<Optional<MuscularGroup>> update(@PathVariable Integer id) {
     try {
       muscularGroupRepository.deleteById(id);
-      return new ResponseEntity<Optional<Exercises>>(HttpStatus.OK);
+      return new ResponseEntity<Optional<MuscularGroup>>(HttpStatus.OK);
     } catch (Exception err) {
-      return new ResponseEntity<Optional<Exercises>>(HttpStatus.NOT_FOUND);
+      return new ResponseEntity<Optional<MuscularGroup>>(HttpStatus.NOT_FOUND);
     }
   }
 
