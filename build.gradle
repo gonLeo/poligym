@@ -25,6 +25,8 @@ dependencies {
 	compile("org.modelmapper:modelmapper:2.3.0")
 	annotationProcessor 'org.projectlombok:lombok:1.18.12'	
     runtimeOnly 'org.postgresql:postgresql'
+	compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.4.2'
+
 
 }
 
