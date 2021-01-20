@@ -8,9 +8,10 @@ import lombok.Data;
 
 @Data
 public class MuscularGroupDTO {
+  private int id;
   private String description;
 
-  public MuscularGroup convertEntityToExercises() {
+  public MuscularGroup convertDTOToEntity() {
     return new ModelMapper().map(this, MuscularGroup.class);
   }
 }

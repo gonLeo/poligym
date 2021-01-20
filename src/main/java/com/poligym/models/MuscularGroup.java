@@ -3,10 +3,12 @@ package com.poligym.models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.poligym.dto.MuscularGroupDTO;
 
+import org.hibernate.annotations.SQLDelete;
 import org.modelmapper.ModelMapper;
 
 import lombok.AllArgsConstructor;
@@ -19,12 +21,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@SQLDelete(sql = "UPDATE muscular_group SET removed_at = now() WHERE id=?")
 public class MuscularGroup extends EntityBase {
 
   private static final long serialVersionUID = 1980884079831325379L;
 
-  @GeneratedValue
   @Id
+  @GeneratedValue
   private int id;
 
   @Column(unique = true, nullable = false, length = 255)
