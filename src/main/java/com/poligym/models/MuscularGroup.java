@@ -3,6 +3,7 @@ package com.poligym.models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.poligym.dto.MuscularGroupDTO;
@@ -25,8 +26,8 @@ public class MuscularGroup extends EntityBase {
 
   private static final long serialVersionUID = 1980884079831325379L;
 
-  @GeneratedValue
   @Id
+  @GeneratedValue
   private int id;
 
   @Column(unique = true, nullable = false, length = 255)

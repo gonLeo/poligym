@@ -1,5 +1,6 @@
 package com.poligym.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,45 +29,69 @@ public class MuscularGroupController {
   MuscularGroupRepository muscularGroupRepository;
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<MuscularGroup> show(@PathVariable Integer id) {
+  public ResponseEntity<MuscularGroupDTO> show(@PathVariable Integer id) {
     return muscularGroupRepository.findById(id).map(muscularGroup -> {
-      return ResponseEntity.status(HttpStatus.OK).body(muscularGroup);
+      MuscularGroupDTO returnValue = muscularGroup.convertEntityToDTO();
+      return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }).orElse(ResponseEntity.notFound().build());
   }
 
   @GetMapping()
-  public List<MuscularGroup> index() {
-    List<MuscularGroup> exercises = muscularGroupRepository.findAll().stream().filter(s -> s.getRemovedAt() == null)
-        .collect(Collectors.toList());
+  public List<MuscularGroupDTO> index() {
+    List<MuscularGroup> muscularGroups = muscularGroupRepository.findAll().stream()
+        .filter(muscularGroupData -> muscularGroupData.getRemovedAt() == null).collect(Collectors.toList());
 
-    return exercises;
+    List<MuscularGroupDTO> muscularGroupDTOs = new ArrayList<>();
+
+    for (MuscularGroup muscularGroup : muscularGroups) {
+      MuscularGroupDTO muscularGroupDTO = new MuscularGroupDTO();
+      muscularGroupDTO = muscularGroup.convertEntityToDTO();
+      muscularGroupDTOs.add(muscularGroupDTO);
+    }
+
+    return muscularGroupDTOs;
   }
 
   @GetMapping(value = "/all")
-  public List<MuscularGroup> indexAll() {
-    List<MuscularGroup> exercises = muscularGroupRepository.findAll();
-    return exercises;
+  public List<MuscularGroupDTO> indexAll() {
+    List<MuscularGroup> muscularGroups = muscularGroupRepository.findAll();
+
+    List<MuscularGroupDTO> muscularGroupDTOs = new ArrayList<>();
+
+    for (MuscularGroup muscularGroup : muscularGroups) {
+      MuscularGroupDTO muscularGroupDTO = new MuscularGroupDTO();
+      muscularGroupDTO = muscularGroup.convertEntityToDTO();
+      muscularGroupDTOs.add(muscularGroupDTO);
+    }
+
+    return muscularGroupDTOs;
   }
 
   @PostMapping()
-  public ResponseEntity<MuscularGroup> save(@RequestBody MuscularGroupDTO muscularGroupDTO) {
+  public ResponseEntity<MuscularGroupDTO> save(@RequestBody MuscularGroupDTO muscularGroupDTO) {
 
-    MuscularGroup muscularGroup = muscularGroupDTO.convertEntityToExercises();
-    muscularGroupRepository.save(muscularGroup);
+    try {
+      MuscularGroup muscularGroup = muscularGroupDTO.convertDTOToEntity();
+      MuscularGroup returnValue = muscularGroupRepository.save(muscularGroup);
 
-    return new ResponseEntity<>(muscularGroup, HttpStatus.OK);
+      return new ResponseEntity<>(returnValue.convertEntityToDTO(), HttpStatus.OK);
+    } catch (Exception err) {
+      return new ResponseEntity<MuscularGroupDTO>(HttpStatus.BAD_REQUEST);
+    }
+
   }
 
   @PutMapping(path = "/{id}")
-  public ResponseEntity<MuscularGroup> update(@RequestBody MuscularGroupDTO muscularGroupDTO,
+  public ResponseEntity<MuscularGroupDTO> update(@RequestBody MuscularGroupDTO muscularGroupDTO,
       @PathVariable Integer id) {
 
     return muscularGroupRepository.findById(id).map(muscularGroup -> {
-      MuscularGroup updated = muscularGroupDTO.convertEntityToExercises();
+      MuscularGroup updated = muscularGroupDTO.convertDTOToEntity();
       muscularGroup.setDescription(updated.getDescription());
 
       MuscularGroup muscularGroupUpdated = muscularGroupRepository.save(muscularGroup);
-      return ResponseEntity.status(HttpStatus.OK).body(muscularGroupUpdated);
+      MuscularGroupDTO returnValue = muscularGroupUpdated.convertEntityToDTO();
+      return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }).orElse(ResponseEntity.notFound().build());
   };
 
