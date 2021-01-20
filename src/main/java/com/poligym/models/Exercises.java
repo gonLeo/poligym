@@ -33,13 +33,13 @@ public class Exercises extends EntityBase {
   @Id
   private int id;
 
-  @Column(nullable = false, length = 255)
+  @Column(nullable = true, length = 255)
   private String equipment;
 
   @Column(nullable = false, length = 255)
   private String description;
 
-  @JoinColumn(name = "muscularGroup_id")
+  @JoinColumn(name = "muscular_group_id")
   @OneToOne(targetEntity = MuscularGroup.class, cascade = CascadeType.ALL)
   private MuscularGroup muscularGroup;
 
