@@ -54,6 +54,7 @@ public class TrainningController {
         this.trainningRepository = trainningRepository;
     }
 
+    //Listar todos os treinos
     @GetMapping
     public ResponseEntity<List<TrainningDTO>> getAllTrains() {
 
@@ -72,95 +73,93 @@ public class TrainningController {
         return new ResponseEntity<>(trainningDTOs, HttpStatus.OK);
     }
 
-    /**
-     * Method that creates trainning in the database.
-     * 
-     * @author Pedro Vinicius @since 18/01/2021
-     * 
-     * @param apiVersion - API version at the moment @param apiKey - API Key to
-     * access the routes @param dto, where: - id - trainning id; - user_id -
-     * identification number of a user in the system; - exercise_id - identification
-     * number of a exercise in the system; - weight – weight of exercise - series -
-     * how much series contains in a exercise - repetitions - how much repetitions
-     * contains in a exercise - training_validity - train validate format
-     * YYYY-MM-DDThh:mm:ss.sssZ in the Local time zone;
-     * 
-     * @param result - Bind result
-     * 
-     * @return ResponseEntity with a <code>Response<TrainningDTO></code> object and
-     * the HTTP status
-     * 
-     * HTTP Status:
-     * 
-     * 201 - Created: Everything worked as expected. 400 - Bad Request: The request
-     * was unacceptable, often due to missing a required parameter. 404 - Not Found:
-     * The requested resource doesn't exist. 409 - Conflict: The request conflicts
-     * with another request (perhaps due to using the same idempotent key). 422 –
-     * Unprocessable Entity: if any of the fields are not parsable or the start date
-     * is greater than end date. 429 - Too Many Requests: Too many requests hit the
-     * API too quickly. We recommend an exponential back-off of your requests. 500,
-     * 502, 503, 504 - Server Errors: something went wrong on API end (These are
-     * rare).
-     * 
-     * @throws
-     */
+    //Listar treino de usuario especifico
+    @GetMapping(value = "/{user_id}")
+    public ResponseEntity<Optional<List<TrainningDTO>>> getTrainByUser(@PathVariable int user_id) throws Exception {
+
+      List<Trainning> trainnings = new ArrayList<>();
+      trainnings = trainningRepository.findTrainningByUsersId(user_id);
+      
+      List<TrainningDTO> trainningDTOs = new ArrayList<>();
+
+      if (trainnings.isEmpty()){
+         new ResponseEntity<>("Train not found", HttpStatus.BAD_REQUEST);
+      }
+
+      for (Trainning trainning: trainnings) {
+         TrainningDTO trainningDTO = new TrainningDTO();
+         trainningDTO = trainning.convertEntityToDTO();
+         trainningDTOs.add(trainningDTO);
+     }
+
+     return new ResponseEntity<Optional<List<TrainningDTO>>>(HttpStatus.OK);
+    }
+
 
      @PostMapping
      public ResponseEntity<TrainningDTO> create(@Valid @RequestBody TrainningDTO dto) {
-        
-        Trainning trainning = dto.convertDTOToEntity();
+         // System.out.print("DTO: " + dto);
+         Trainning trainning = dto.convertDTOToEntity();
+
+         // Exercises exercises = exercisesRepository.findById(dto.getExercises_id());
+         // User users = userRepository.getOne(dto.getUsers_id());
+
+         // trainning.setExercises(exercises);
+         // trainning.setUsers(users);
+         
+         // System.out.print("ENTIDADE: " + trainning.getUsers());
+
+         // return "Opa";
         Trainning trainningToCreate = trainningRepository.save(trainning);
 
         TrainningDTO returnValue = trainningToCreate.convertEntityToDTO();
 
-        return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
+        return new ResponseEntity<TrainningDTO>(returnValue, HttpStatus.CREATED);
      }
 
-     @PutMapping(value="/{id}")
-     public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @Validated @RequestBody TrainningDTO dto) throws Exception {
-         //TODO: process PUT request
+   //   @PutMapping(value="/{id}")
+   //   public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @Validated @RequestBody TrainningDTO dto) throws Exception {
          
-        //Busca se o treino passado pelo Id existe no banco
-         Optional<Trainning> getBanco = trainningRepository.findById(id);
+   //      //Busca se o treino passado pelo Id existe no banco
+   //       Optional<Trainning> getBanco = trainningRepository.findById(id);
 
-         if (!getBanco.isPresent()){
-            new ResponseEntity<>("Train not found", HttpStatus.BAD_REQUEST);
-         }
+   //       if (!getBanco.isPresent()){
+   //          new ResponseEntity<>("Train not found", HttpStatus.BAD_REQUEST);
+   //       }
 
-         //Precisamos verificar se o treino que o usuario esta tentando atualizar, contém os dados corretos no banco, como:
-         // Verificar se o User existe
+   //       //Precisamos verificar se o treino que o usuario esta tentando atualizar, contém os dados corretos no banco, como:
+   //       // Verificar se o User existe
+   //       Optional<User> getUser = userRepository.findById(dto.getUsers_id());
 
-         Optional<User> getUser = userRepository.findById(dto.getUsers_id());
+   //       if (!getUser.isPresent()) {
+   //          new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+   //       }
 
-         if (!getUser.isPresent()) {
-            new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
-         }
+   //       //Verificar se o exercicio existe
+   //       Optional<Exercises> getExercises = exercisesRepository.findById(dto.getExercises_id());
 
-         //Verificar se o exercicio existe
-         Optional<Exercises> getExercises = exercisesRepository.findById(dto.getExercises_id());
+   //       if (!getExercises.isPresent()) {
+   //          new ResponseEntity<>("Exercise not found", HttpStatus.BAD_REQUEST);
+   //       }
 
-         if (!getExercises.isPresent()) {
-            new ResponseEntity<>("Exercise not found", HttpStatus.BAD_REQUEST);
-         }
+   //       Trainning trainningUpdate = new Trainning();
+   //       //Caso sim, vamos converter o treino recebi pelo Body para Entidade
+   //       Trainning trainningBody = dto.convertDTOToEntity();
 
-         Trainning trainningUpdate = new Trainning();
-         //Caso sim, vamos converter o treino recebi pelo Body para Entidade
-         Trainning trainningBody = dto.convertDTOToEntity();
-
-         trainningUpdate.setUsers(trainningBody.getUsers());
-         trainningUpdate.setExercises(trainningBody.getExercises());
-         trainningUpdate.setSection(trainningBody.getSection());
-         trainningUpdate.setSeries(trainningBody.getSeries());
-         trainningUpdate.setRepetitions(trainningBody.getRepetitions());
-         trainningUpdate.setWeight(trainningBody.getWeight());
-         trainningUpdate.setTraining_validity(trainningBody.getTraining_validity());
+   //       trainningUpdate.setUsers(trainningBody.getUsers());
+   //       trainningUpdate.setExercises(trainningBody.getExercises());
+   //       trainningUpdate.setSection(trainningBody.getSection());
+   //       trainningUpdate.setSeries(trainningBody.getSeries());
+   //       trainningUpdate.setRepetitions(trainningBody.getRepetitions());
+   //       trainningUpdate.setWeight(trainningBody.getWeight());
+   //       trainningUpdate.setTrainning_validity(trainningBody.getTrainning_validity());
          
 
-         Trainning valueSave = trainningRepository.save(trainningUpdate);
-         TrainningDTO returnValue = valueSave.convertEntityToDTO();
+   //       Trainning valueSave = trainningRepository.save(trainningUpdate);
+   //       TrainningDTO returnValue = valueSave.convertEntityToDTO();
 
-         return new ResponseEntity<>(returnValue, HttpStatus.OK);
-     }
+   //       return new ResponseEntity<>(returnValue, HttpStatus.OK);
+   //   }
 
      @DeleteMapping(path = "/{id}")
      public ResponseEntity<Optional<TrainningDTO>> delete(@PathVariable int id){

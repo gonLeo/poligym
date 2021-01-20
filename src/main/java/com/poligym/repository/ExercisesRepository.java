@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ExercisesRepository extends JpaRepository<Exercises, Integer> {
 
-    Optional<Exercises> findById(int id);
+    Exercises findById(int id);
 }

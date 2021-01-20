@@ -70,7 +70,7 @@ public class Trainning extends EntityBase {
   private int repetitions;
 
   @Column(name = "training_validity", nullable = false)
-  private Date training_validity;
+  private Date trainning_validity;
 
   /**
    * Method to convert an Trainning entity to an User DTO

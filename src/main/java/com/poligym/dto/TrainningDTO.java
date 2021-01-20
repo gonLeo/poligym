@@ -4,9 +4,14 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
+import com.poligym.models.Exercises;
 import com.poligym.models.Trainning;
+import com.poligym.models.User;
+import com.poligym.repository.ExercisesRepository;
+import com.poligym.repository.UserRepository;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +30,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class TrainningDTO {
+
+  @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
+  private ExercisesRepository exercisesRepository;
+
 
   private int id;
 
@@ -47,7 +59,7 @@ public class TrainningDTO {
   private int repetitions;
 
   @NotNull(message = "training_validity cannot be a null")
-  private Date training_validity;
+  private Date trainning_validity;
 
   /**
    * Method to convert an TrainningDTO to a Travel Entity
@@ -60,7 +72,23 @@ public class TrainningDTO {
    */
 
   public Trainning convertDTOToEntity() {
-    return new ModelMapper().map(this, Trainning.class);
+
+    System.out.println("DTO: " + this.exercises_id);
+
+    Trainning trainning = new ModelMapper().map(this, Trainning.class);
+
+    System.out.println("ENTITY: " + trainning.getSeries());
+
+    Exercises exercises = exercisesRepository.findById(this.exercises_id);
+
+    System.out.println("EXERCICIO: " + exercises.getDescription());
+    User users = userRepository.findById(this.users_id);
+
+    trainning.setUsers(users);
+    trainning.setExercises(exercises);
+
+    return trainning;
+
   }
 
 }
