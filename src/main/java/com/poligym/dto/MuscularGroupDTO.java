@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Data
 public class MuscularGroupDTO {
+  private int id;
   private String description;
 
   public MuscularGroup convertDTOToEntity() {
