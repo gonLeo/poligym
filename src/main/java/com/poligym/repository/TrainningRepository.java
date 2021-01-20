@@ -12,6 +12,6 @@ public interface TrainningRepository extends JpaRepository<Trainning, Integer>{
     
     Optional<Trainning> findById(int id);
 
-    List<Trainning> findTrainningByUsersId(int user_id);
+    List<Trainning> findTrainningByUsersId(int usersId);
 
 }

@@ -7,6 +7,9 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import com.poligym.dto.TrainningDTO;
+import com.poligym.exception.ExercisesNotFoundException;
+import com.poligym.exception.TrainningNotFoundException;
+import com.poligym.exception.UserNotFoundException;
 import com.poligym.models.Exercises;
 import com.poligym.models.Trainning;
 import com.poligym.models.User;
@@ -56,10 +59,14 @@ public class TrainningController {
 
     //Listar todos os treinos
     @GetMapping
-    public ResponseEntity<List<TrainningDTO>> getAllTrains() {
+    public ResponseEntity<List<TrainningDTO>> getAllTrains() throws TrainningNotFoundException {
 
         List<Trainning> trainnings = new ArrayList<>();
         trainnings = trainningRepository.findAll();
+
+        if (trainnings.isEmpty()){
+            throw new TrainningNotFoundException("Train not found");
+         }
 
         List<TrainningDTO> trainningDTOs = new ArrayList<>();
 
@@ -74,16 +81,16 @@ public class TrainningController {
     }
 
     //Listar treino de usuario especifico
-    @GetMapping(value = "/{user_id}")
-    public ResponseEntity<Optional<List<TrainningDTO>>> getTrainByUser(@PathVariable int user_id) throws Exception {
+    @GetMapping(value = "/{usersId}")
+    public ResponseEntity<List<TrainningDTO>> getTrainByUser(@PathVariable int usersId) throws TrainningNotFoundException {
 
       List<Trainning> trainnings = new ArrayList<>();
-      trainnings = trainningRepository.findTrainningByUsersId(user_id);
+      trainnings = trainningRepository.findTrainningByUsersId(usersId);
       
       List<TrainningDTO> trainningDTOs = new ArrayList<>();
 
       if (trainnings.isEmpty()){
-         new ResponseEntity<>("Train not found", HttpStatus.BAD_REQUEST);
+         throw new TrainningNotFoundException("Train not found");
       }
 
       for (Trainning trainning: trainnings) {
@@ -92,7 +99,7 @@ public class TrainningController {
          trainningDTOs.add(trainningDTO);
      }
 
-     return new ResponseEntity<Optional<List<TrainningDTO>>>(HttpStatus.OK);
+     return new ResponseEntity<>(trainningDTOs, HttpStatus.OK);
     }
 
 
@@ -108,28 +115,29 @@ public class TrainningController {
      }
 
      @PutMapping(value="/{id}")
-     public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @Validated @RequestBody TrainningDTO dto) throws Exception {
+     public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @Validated @RequestBody TrainningDTO dto) throws TrainningNotFoundException, 
+     UserNotFoundException, ExercisesNotFoundException {
          
         //Busca se o treino passado pelo Id existe no banco
          Optional<Trainning> getBanco = trainningRepository.findById(id);
 
          if (!getBanco.isPresent()){
-            new ResponseEntity<>("Train not found", HttpStatus.BAD_REQUEST);
+            throw new TrainningNotFoundException("Train not found");
          }
 
          //Precisamos verificar se o treino que o usuario esta tentando atualizar, contém os dados corretos no banco, como:
          // Verificar se o User existe
-         Optional<User> getUser = userRepository.findById(dto.getUsers_id());
+         Optional<User> getUser = userRepository.findById(dto.getUsersId());
 
          if (!getUser.isPresent()) {
-            new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+            throw new UserNotFoundException("User not found");
          }
 
          //Verificar se o exercicio existe
-         Optional<Exercises> getExercises = exercisesRepository.findById(dto.getExercises_id());
+         Optional<Exercises> getExercises = exercisesRepository.findById(dto.getExercisesId());
 
          if (!getExercises.isPresent()) {
-            new ResponseEntity<>("Exercise not found", HttpStatus.BAD_REQUEST);
+            throw new ExercisesNotFoundException("Exercise not found");
          }
 
          Trainning trainningUpdate = new Trainning();
@@ -152,15 +160,16 @@ public class TrainningController {
      }
 
      @DeleteMapping(path = "/{id}")
-     public ResponseEntity<Optional<TrainningDTO>> delete(@PathVariable int id){
-         try {
-            trainningRepository.deleteById(id);
-            return new ResponseEntity<Optional<TrainningDTO>>(HttpStatus.OK);
-         } catch (Exception err) {
-            return new ResponseEntity<Optional<TrainningDTO>>(HttpStatus.NOT_FOUND);
-         }
-     }
+     public ResponseEntity<TrainningDTO> delete(@PathVariable int id) throws TrainningNotFoundException {
+        //Busca se o treino passado pelo Id existe no banco
+        Optional<Trainning> getTrainning = trainningRepository.findById(id);
 
-     
+        if (!getTrainning.isPresent()){
+            throw new TrainningNotFoundException("Train not found");
+         }
+
+         trainningRepository.deleteById(id);
+         return new ResponseEntity<TrainningDTO>(HttpStatus.OK);
+     }
     
 }
