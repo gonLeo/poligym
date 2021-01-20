@@ -1,6 +1,5 @@
 package com.poligym.repository;
 
-
 import com.poligym.models.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;

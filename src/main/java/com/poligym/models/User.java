@@ -16,6 +16,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.modelmapper.ModelMapper;
 
 @Data
@@ -23,6 +24,7 @@ import org.modelmapper.ModelMapper;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Users")
+@DynamicUpdate(true)
 @Entity
 
 public class User extends EntityBase {
