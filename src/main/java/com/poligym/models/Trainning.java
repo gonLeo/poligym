@@ -57,8 +57,9 @@ public class Trainning extends EntityBase {
   @JoinColumn(name = "exercises_id", nullable = false, referencedColumnName = "id")
   private Exercises exercises;
 
-  @Column(name = "section", nullable = false)
-  private String section;
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "section_id", nullable = false, referencedColumnName = "id")
+  private Section section;
 
   @Column(name = "weight", nullable = false)
   private float weight;
