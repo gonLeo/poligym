@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 
 import com.poligym.models.User;
+import com.poligym.utils.security.BcryptUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,6 +38,11 @@ public class UserDTO {
 
     @NotNull(message = "the medicalCertificateValidate cannot be a null")
     private Date medicalCertificateValidate;
+
+    //Adicionando método de encriptacao de senha
+    public String getPassword() {
+        return BcryptUtils.getHash(this.password);
+    }
 
     public User convertDTOToEntity() {
         return new ModelMapper().map(this, User.class);

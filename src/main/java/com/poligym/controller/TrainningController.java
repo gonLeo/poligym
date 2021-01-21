@@ -12,7 +12,6 @@ import com.poligym.exception.TrainningNotFoundException;
 import com.poligym.exception.UserNotFoundException;
 import com.poligym.models.Exercises;
 import com.poligym.models.Trainning;
-import com.poligym.models.User;
 import com.poligym.repository.ExercisesRepository;
 import com.poligym.repository.TrainningRepository;
 import com.poligym.repository.UserRepository;
@@ -127,9 +126,7 @@ public class TrainningController {
 
          //Precisamos verificar se o treino que o usuario esta tentando atualizar, contém os dados corretos no banco, como:
          // Verificar se o User existe
-         Optional<User> getUser = userRepository.findById(dto.getUsersId());
-
-         if (!getUser.isPresent()) {
+         if (userRepository.findById(dto.getUsersId()) == null) {
             throw new UserNotFoundException("User not found");
          }
 
