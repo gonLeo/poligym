@@ -24,7 +24,6 @@ import org.modelmapper.ModelMapper;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Users")
-@DynamicUpdate(true)
 @Entity
 
 public class User extends EntityBase {
