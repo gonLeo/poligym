@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
-import com.poligym.models.Exercises;
 import com.poligym.models.Trainning;
 
 import org.modelmapper.ModelMapper;
@@ -30,10 +29,10 @@ public class TrainningDTO {
   private int id;
 
   @NotNull(message = "User id cannot be a null")
-  private int users_id;
+  private int usersId;
 
   @NotNull(message = "Exercise id cannot be a null")
-  private Exercises exercises;
+  private int exercisesId;
 
   @NotNull(message = "Section cannot be a null")
   private String section;
@@ -48,7 +47,7 @@ public class TrainningDTO {
   private int repetitions;
 
   @NotNull(message = "training_validity cannot be a null")
-  private Date training_validity;
+  private Date trainning_validity;
 
   /**
    * Method to convert an TrainningDTO to a Travel Entity

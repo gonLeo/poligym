@@ -49,12 +49,12 @@ public class Trainning extends EntityBase {
   private int id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "users_id", nullable = false)
+  @JoinColumn(name = "users_id", nullable = false, referencedColumnName = "id")
   @JsonBackReference
   private User users;
 
   @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "exercises_id", nullable = false)
+  @JoinColumn(name = "exercises_id", nullable = false, referencedColumnName = "id")
   private Exercises exercises;
 
   @Column(name = "section", nullable = false)
@@ -70,7 +70,7 @@ public class Trainning extends EntityBase {
   private int repetitions;
 
   @Column(name = "training_validity", nullable = false)
-  private Date training_validity;
+  private Date trainning_validity;
 
   /**
    * Method to convert an Trainning entity to an User DTO
