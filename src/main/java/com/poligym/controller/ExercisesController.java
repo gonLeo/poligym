@@ -1,5 +1,6 @@
 package com.poligym.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import com.poligym.dto.ExercisesDTO;
 import com.poligym.models.Exercises;
 import com.poligym.repository.ExercisesRepository;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class ExercisesController {
 
   @Autowired
-  ExercisesRepository exercisesRepository;
+  private ExercisesRepository exercisesRepository;
 
   @GetMapping(value = "/{id}")
   public ResponseEntity<Optional<Exercises>> show(@PathVariable Integer id) {
@@ -38,9 +40,17 @@ public class ExercisesController {
   }
 
   @GetMapping()
-  public List<Exercises> index() {
+  public List<ExercisesDTO> index() {
+    List<ExercisesDTO> returnValue = new ArrayList<>();
+
     List<Exercises> exercises = exercisesRepository.findAll();
-    return exercises;
+
+    for (Exercises exercise : exercises) {
+      ExercisesDTO exercisesDTO = new ExercisesDTO();
+      BeanUtils.copyProperties(exercise, exercisesDTO);
+      returnValue.add(exercisesDTO);
+    }
+    return returnValue;
   }
 
   @PostMapping()

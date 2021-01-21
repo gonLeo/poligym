@@ -4,6 +4,7 @@ package com.poligym.models;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -40,7 +41,7 @@ public class Exercises extends EntityBase {
   private String description;
 
   @JoinColumn(name = "muscular_group_id")
-  @OneToOne(targetEntity = MuscularGroup.class, cascade = CascadeType.ALL)
+  @OneToOne(targetEntity = MuscularGroup.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   private MuscularGroup muscularGroup;
 
   @Override
