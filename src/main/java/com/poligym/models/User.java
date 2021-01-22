@@ -16,7 +16,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import org.hibernate.annotations.DynamicUpdate;
 import org.modelmapper.ModelMapper;
 
 @Data

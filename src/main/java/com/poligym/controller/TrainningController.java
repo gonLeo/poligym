@@ -151,7 +151,7 @@ public class TrainningController {
       trainningUpdate.setSeries(trainningBody.getSeries());
       trainningUpdate.setRepetitions(trainningBody.getRepetitions());
       trainningUpdate.setWeight(trainningBody.getWeight());
-      trainningUpdate.setTrainning_validity(trainningBody.getTrainning_validity());
+      trainningUpdate.setRest(trainningBody.getRest());
 
       Trainning valueSave = trainningRepository.save(trainningUpdate);
       TrainningDTO returnValue = valueSave.convertEntityToDTO();

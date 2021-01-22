@@ -1,6 +1,5 @@
 package com.poligym.dto;
 
-import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
