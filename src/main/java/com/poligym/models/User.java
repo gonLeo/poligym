@@ -53,6 +53,9 @@ public class User extends EntityBase {
     @Column(name = "medicalCertificateValidate", nullable = false)
     private Date medicalCertificateValidate;
 
+    @Column(name = "admin", columnDefinition = "boolean default false", nullable = false)
+    private boolean admin;
+
     public UserDTO convertEntityToDTO() {
         return new ModelMapper().map(this, UserDTO.class);
     }

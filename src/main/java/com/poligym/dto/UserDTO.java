@@ -39,7 +39,10 @@ public class UserDTO {
     @NotNull(message = "the medicalCertificateValidate cannot be a null")
     private Date medicalCertificateValidate;
 
-    //Adicionando método de encriptacao de senha
+    @NotNull(message = "parameter admin cannot be a null")
+    private boolean admin;
+
+    // Adicionando método de encriptacao de senha
     public String getPassword() {
         return BcryptUtils.getHash(this.password);
     }
