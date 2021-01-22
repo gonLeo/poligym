@@ -35,7 +35,7 @@ public class Section extends EntityBase {
     private String description;
 
     @Column(name = "daysRepetition", nullable = false)
-    private String daysRepetition;
+    private int daysRepetition;
 
     public SectionDTO convertEntityToDTO() {
         return new ModelMapper().map(this, SectionDTO.class);

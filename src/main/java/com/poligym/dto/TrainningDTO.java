@@ -34,8 +34,8 @@ public class TrainningDTO {
   @NotNull(message = "Exercise id cannot be a null")
   private int exercisesId;
 
-  @NotNull(message = "Section cannot be a null")
-  private String section;
+  @NotNull(message = "Section id cannot be a null")
+  private int sectionId;
 
   @NotNull(message = "Weight cannot be a null")
   private float weight;
@@ -46,8 +46,8 @@ public class TrainningDTO {
   @NotNull(message = "repetitions cannot be a null")
   private int repetitions;
 
-  @NotNull(message = "training_validity cannot be a null")
-  private Date trainning_validity;
+  @NotNull(message = "rest cannot be a null")
+  private int rest;  
 
   /**
    * Method to convert an TrainningDTO to a Travel Entity

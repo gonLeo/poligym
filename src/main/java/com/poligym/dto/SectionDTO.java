@@ -22,7 +22,7 @@ public class SectionDTO {
     private String description;
 
     @NotNull(message = "The daysRepetition cannot be a null")
-    private String daysRepetition;
+    private int daysRepetition;
 
     public Section convertDTOToEntity() {
         return new ModelMapper().map(this, Section.class);

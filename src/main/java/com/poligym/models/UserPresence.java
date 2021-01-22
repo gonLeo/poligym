@@ -1,7 +1,6 @@
 
 package com.poligym.models;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.poligym.dto.ExercisesDTO;
 import com.poligym.dto.UserPresenceDTO;
 
 import org.modelmapper.ModelMapper;
@@ -38,6 +36,11 @@ public class UserPresence extends EntityBase {
     @JoinColumn(name = "users_id", nullable = false, referencedColumnName = "id")
     @JsonBackReference
     private User users;
+
+    @OneToOne()
+    @JoinColumn(name = "section_id", nullable = false, referencedColumnName = "id")
+    @JsonBackReference
+    private Section section;
 
     public UserPresenceDTO convertEntityToDTO() {
         return new ModelMapper().map(this, UserPresenceDTO.class);
