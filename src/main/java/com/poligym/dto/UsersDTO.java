@@ -4,7 +4,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotNull;
 
-import com.poligym.models.User;
+import com.poligym.models.Users;
 import com.poligym.utils.security.BcryptUtils;
 
 import lombok.AllArgsConstructor;
@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode
-public class UserDTO {
+public class UsersDTO {
     private int id;
 
     @NotNull(message = "The name cannot be a null")
@@ -47,8 +47,8 @@ public class UserDTO {
         return BcryptUtils.getHash(this.password);
     }
 
-    public User convertDTOToEntity() {
-        return new ModelMapper().map(this, User.class);
+    public Users convertDTOToEntity() {
+        return new ModelMapper().map(this, Users.class);
     }
 
 }

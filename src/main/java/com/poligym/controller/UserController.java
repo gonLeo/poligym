@@ -2,8 +2,8 @@ package com.poligym.controller;
 
 import javax.validation.Valid;
 
-import com.poligym.dto.UserDTO;
-import com.poligym.models.User;
+import com.poligym.dto.UsersDTO;
+import com.poligym.models.Users;
 import com.poligym.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,24 +29,24 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO dto) {
+    public ResponseEntity<UsersDTO> create(@Valid @RequestBody UsersDTO dto) {
 
-        User user = dto.convertDTOToEntity();
-        User newUser = userRepository.save(user);
+        Users user = dto.convertDTOToEntity();
+        Users newUser = userRepository.save(user);
 
-        UserDTO returnValue = newUser.convertEntityToDTO();
+        UsersDTO returnValue = newUser.convertEntityToDTO();
 
         return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> getUserDetail(@PathVariable int id) throws Exception {
+    public ResponseEntity<UsersDTO> getUserDetail(@PathVariable int id) throws Exception {
 
         if (userRepository.findById(id) == null) {
             return ResponseEntity.notFound().build();
         } else {
-            User userDetails = userRepository.findById(id);
-            UserDTO userDto = new UserDTO();
+            Users userDetails = userRepository.findById(id);
+            UsersDTO userDto = new UsersDTO();
             userDto = userDetails.convertEntityToDTO();
 
             return new ResponseEntity<>(userDto, HttpStatus.OK);
@@ -55,12 +55,12 @@ public class UserController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable int id, @RequestBody UserDTO dto) {
+    public ResponseEntity<UsersDTO> updateUser(@PathVariable int id, @RequestBody UsersDTO dto) {
 
         if (userRepository.findById(id) == null) {
             return ResponseEntity.notFound().build();
         } else {
-            User user = userRepository.findById(id);
+            Users user = userRepository.findById(id);
             user.setName(dto.getName());
             user.setEmail(dto.getEmail());
             user.setPassword(dto.getPassword());
@@ -68,7 +68,7 @@ public class UserController {
             user.setRegistrationDate(dto.getRegistrationDate());
             user.setMedicalCertificateValidate(dto.getMedicalCertificateValidate());
 
-            UserDTO userUpdated = userRepository.save(user).convertEntityToDTO();
+            UsersDTO userUpdated = userRepository.save(user).convertEntityToDTO();
 
             return new ResponseEntity<>(userUpdated, HttpStatus.OK);
         }
@@ -76,12 +76,12 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id) {
+    public ResponseEntity<Users> updateUser(@PathVariable int id) {
         try {
             userRepository.deleteById(id);
-            return new ResponseEntity<User>(HttpStatus.OK);
+            return new ResponseEntity<Users>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
         }
     }
 

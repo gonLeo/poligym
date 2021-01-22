@@ -9,25 +9,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.poligym.dto.UserDTO;
+import com.poligym.dto.UsersDTO;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.modelmapper.ModelMapper;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "Users")
 @DynamicUpdate(true)
 @Entity
-
-public class User extends EntityBase {
+public class Users extends EntityBase {
     private static final long serialVersionUID = 1L;
 
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,7 +51,7 @@ public class User extends EntityBase {
     @Column(name = "admin", columnDefinition = "boolean default false", nullable = false)
     private boolean admin;
 
-    public UserDTO convertEntityToDTO() {
-        return new ModelMapper().map(this, UserDTO.class);
+    public UsersDTO convertEntityToDTO() {
+        return new ModelMapper().map(this, UsersDTO.class);
     }
 }

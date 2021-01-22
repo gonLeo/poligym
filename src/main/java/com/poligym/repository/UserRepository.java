@@ -1,11 +1,13 @@
 package com.poligym.repository;
 
-import com.poligym.models.User;
+import java.util.Optional;
+
+import com.poligym.models.Users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Integer> {
-    User findById(int id);
+public interface UserRepository extends JpaRepository<Users, Integer> {
+    Users findById(int id);
 
-    User findByEmail(String email);
+    Optional<Users> findByEmail(String email);
 }
