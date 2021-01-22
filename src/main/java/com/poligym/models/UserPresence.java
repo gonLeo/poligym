@@ -44,8 +44,3 @@ public class UserPresence extends EntityBase {
     }
 
 }
-
-/*
- * "equipment" : "Barra fixa", "muscleGroup": "Biceps", "description":
- * "Tá Saindo da jaula o monstro"
- */
