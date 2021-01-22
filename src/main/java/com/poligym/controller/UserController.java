@@ -3,7 +3,9 @@ package com.poligym.controller;
 import javax.validation.Valid;
 
 import com.poligym.dto.UserDTO;
+import com.poligym.models.Section;
 import com.poligym.models.User;
+import com.poligym.repository.SectionRepository;
 import com.poligym.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,17 +42,18 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> getUserDetail(@PathVariable int id) throws Exception {
+    public ResponseEntity<UserDTO> getUserDetail(@PathVariable int id) throws
+    Exception {
 
-        if (userRepository.findById(id) == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            User userDetails = userRepository.findById(id);
-            UserDTO userDto = new UserDTO();
-            userDto = userDetails.convertEntityToDTO();
+    if (userRepository.findById(id) == null) {
+    return ResponseEntity.notFound().build();
+    } else {
+    User userDetails = userRepository.findById(id);
+    UserDTO userDto = new UserDTO();
+    userDto = userDetails.convertEntityToDTO();
 
-            return new ResponseEntity<>(userDto, HttpStatus.OK);
-        }
+    return new ResponseEntity<>(userDto, HttpStatus.OK);
+    }
 
     }
 
