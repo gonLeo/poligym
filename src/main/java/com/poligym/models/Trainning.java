@@ -1,7 +1,5 @@
 package com.poligym.models;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -70,8 +68,9 @@ public class Trainning extends EntityBase {
   @Column(name = "repetitions", nullable = false)
   private int repetitions;
 
-  @Column(name = "training_validity", nullable = false)
-  private Date trainning_validity;
+  @Column(name = "rest", nullable = false)
+  private int rest;
+  
 
   /**
    * Method to convert an Trainning entity to an User DTO

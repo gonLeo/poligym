@@ -15,14 +15,14 @@ import org.modelmapper.ModelMapper;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class SectionDTO {
+public class UserPresenceDTO {
     private int id;
 
-    @NotNull(message = "The description cannot be a null")
-    private String description;
+    @NotNull(message = "The users_id cannot be a null")
+    private int usersId;
 
-    @NotNull(message = "The daysRepetition cannot be a null")
-    private int daysRepetition;
+    @NotNull(message = "The section_id cannot be a null")
+    private int sectionId;
 
     public Section convertDTOToEntity() {
         return new ModelMapper().map(this, Section.class);

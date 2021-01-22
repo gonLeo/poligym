@@ -65,7 +65,7 @@ public class TrainningController {
       trainnings = trainningRepository.findAll();
 
       if (trainnings.isEmpty()) {
-         throw new TrainningNotFoundException("Train not found");
+         throw new TrainningNotFoundException("Trainig not found");
       }
 
       List<TrainningDTO> trainningDTOs = new ArrayList<>();
@@ -91,7 +91,7 @@ public class TrainningController {
       List<TrainningDTO> trainningDTOs = new ArrayList<>();
 
       if (trainnings.isEmpty()) {
-         throw new TrainningNotFoundException("Train not found");
+         throw new TrainningNotFoundException("Training not found");
       }
 
       for (Trainning trainning : trainnings) {
@@ -122,7 +122,7 @@ public class TrainningController {
       Optional<Trainning> getBanco = trainningRepository.findById(id);
 
       if (!getBanco.isPresent()) {
-         throw new TrainningNotFoundException("Train not found");
+         throw new TrainningNotFoundException("Training not found");
       }
 
       // Precisamos verificar se o treino que o usuario esta tentando atualizar,
@@ -151,7 +151,7 @@ public class TrainningController {
       trainningUpdate.setSeries(trainningBody.getSeries());
       trainningUpdate.setRepetitions(trainningBody.getRepetitions());
       trainningUpdate.setWeight(trainningBody.getWeight());
-      trainningUpdate.setTrainning_validity(trainningBody.getTrainning_validity());
+      trainningUpdate.setRest(trainningBody.getRest());
 
       Trainning valueSave = trainningRepository.save(trainningUpdate);
       TrainningDTO returnValue = valueSave.convertEntityToDTO();
