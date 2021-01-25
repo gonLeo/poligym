@@ -14,13 +14,11 @@ import com.poligym.dto.UsersDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import org.hibernate.annotations.DynamicUpdate;
 import org.modelmapper.ModelMapper;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "Users")
-@DynamicUpdate(true)
 @Entity
 public class Users extends EntityBase {
     private static final long serialVersionUID = 1L;
