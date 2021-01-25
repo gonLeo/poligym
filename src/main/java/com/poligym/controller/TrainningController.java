@@ -160,8 +160,14 @@ public class TrainningController {
         //Busca se o treino passado pelo Id existe no banco
         Optional<Trainning> getTrainning = trainningRepository.findById(id);
 
-      trainningRepository.deleteById(id);
-      return new ResponseEntity<TrainningDTO>(HttpStatus.OK);
+        if(getTrainning.isPresent()){
+            trainningRepository.deleteById(id);
+            return new ResponseEntity<TrainningDTO>(HttpStatus.OK);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+      
    }
 
 }
