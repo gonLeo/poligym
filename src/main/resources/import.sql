@@ -1,5 +1,5 @@
 -- CRIANDO SEEDERS DE USUARIOS
--- INSERT INTO Users(id, name, email, password, registration_code, registration_date, medical_certificate_validate, created_at) values(1, 'Joao da Silva', 'joaosilva@teste.com', '123456', '1234561', '01/19/2021', '02/19/2021', '01/19/2021');
+-- INSERT INTO Users(id, name, email, password, registration_code, registration_date, medical_certificate_validate, created_at, admin) values(1, 'Joao da Silva', 'joaosilva@teste.com', '$2a$10$fePuAeItxJWzRgaaspWNFeAIXRrzD/xO8SOjGDwsXPkw3TPefsXES', '1234561', '01/19/2021', '02/19/2021', '01/19/2021', 'true');
 -- INSERT INTO Users(id, name, email, password, registration_code, registration_date, medical_certificate_validate, created_at) values(2, 'Eva Brandão Souto', 'evasouto@teste.com', '123456', '1234562', '01/19/2021', '02/19/2021', '01/19/2021');
 -- INSERT INTO Users(id, name, email, password, registration_code, registration_date, medical_certificate_validate, created_at) values(3, 'Salvador Trigueiro Reis', 'salvadorreis@teste.com', '123456', '1234563', '01/19/2021', '02/19/2021', '01/19/2021');
 -- INSERT INTO Users(id, name, email, password, registration_code, registration_date, medical_certificate_validate, created_at) values(4, 'Keyson Simões Caldeira', 'keysoncaldeira@teste.com', '123456', '1234564', '01/19/2021', '02/19/2021', '01/19/2021');

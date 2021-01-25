@@ -10,10 +10,6 @@ public final class SecurityConstants {
     static final String TOKEN_PREFIX = "Bearer ";
     static final String HEADER_STRING = "Authorization";
     // URL que sera permitida ser acessada por qualquer pessoa
-    static final String SIGN_UP_URL = "/v1/user/create";
+    static final String SIGN_UP_URL = "login";
     static final long EXPIRATION_TIME = 7200000;
-
-    // public static void main(String[] args) {
-    // System.out.println(TimeUnit.MILLISECONDS.convert(2, TimeUnit.HOURS));
-    // }
 }

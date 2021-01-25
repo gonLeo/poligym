@@ -10,6 +10,7 @@ import com.poligym.utils.security.BcryptUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,15 +30,12 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping(value = "/user/create")
+    @PostMapping(value = "/create")
     public ResponseEntity<UsersDTO> create(@Valid @RequestBody UsersDTO dto) {
 
         Users user = dto.convertDTOToEntity();
 
         String password = BcryptUtils.getHash(user.getPassword());
-
-        System.out.println("SENHA: " + password);
-
         user.setPassword(password);
         
         Users newUser = userRepository.save(user);
@@ -47,7 +45,7 @@ public class UserController {
         return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/user/{id}")
+    @GetMapping(path = "/users/{id}")
     public ResponseEntity<UsersDTO> getUserDetail(@PathVariable int id) throws Exception {
 
         if (userRepository.findById(id) == null) {
@@ -62,7 +60,7 @@ public class UserController {
 
     }
 
-    @PutMapping(value = "/user/{id}")
+    @PutMapping(path = "/users/{id}")
     public ResponseEntity<UsersDTO> updateUser(@PathVariable int id, @RequestBody UsersDTO dto) {
 
         if (userRepository.findById(id) == null) {
@@ -83,7 +81,8 @@ public class UserController {
 
     }
 
-    @DeleteMapping(value = "/admin/user/{id}")
+    @DeleteMapping(path = "/admin/users/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Users> updateUser(@PathVariable int id) {
         try {
             userRepository.deleteById(id);

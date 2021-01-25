@@ -38,10 +38,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         try {
             Login login = new ObjectMapper().readValue(request.getInputStream(), Login.class);
-            // System.out.println("LOGIN ATTEMP: " + request);
             return this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
         } catch (IOException e) {
-            // System.out.println("PUTZZZZ ERREIIII");
             throw new RuntimeException(e);
         }
     }
@@ -50,8 +48,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
             Authentication authResult) throws IOException, ServletException {
                 String username = ((UserDetails) authResult.getPrincipal()).getUsername();
-                System.out.println("SUCESSO");
-                System.out.println("LOGIN " + username);
                 String token = Jwts.builder()
                                   .setSubject(username)
                                   .setExpiration(new Date(System.currentTimeMillis() + com.poligym.config.SecurityConstants.EXPIRATION_TIME))

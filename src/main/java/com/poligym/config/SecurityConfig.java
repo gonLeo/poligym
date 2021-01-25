@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.GET, com.poligym.config.SecurityConstants.SIGN_UP_URL).permitAll()
-                .antMatchers("/*/user/**").hasRole("USER")
+                .antMatchers("/*/users/**").hasRole("USER")
                 .antMatchers("/*/admin/**").hasRole("ADMIN").and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUserDetailsService));

@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  */
 
 @RestController
-@RequestMapping(path = "/trainning")
+@RequestMapping(path = "/v1")
 public class TrainningController {
 
     @Autowired
@@ -57,7 +57,7 @@ public class TrainningController {
     }
 
     //Listar todos os treinos
-    @GetMapping
+    @GetMapping(path = "/users/trainning")
     public ResponseEntity<List<TrainningDTO>> getAllTrains() throws TrainningNotFoundException {
 
         List<Trainning> trainnings = new ArrayList<>();
@@ -80,7 +80,7 @@ public class TrainningController {
     }
 
     //Listar treino de usuario especifico
-    @GetMapping(value = "/{usersId}")
+    @GetMapping(path = "/users/trainning/{usersId}")
     public ResponseEntity<List<TrainningDTO>> getTrainByUser(@PathVariable int usersId) throws TrainningNotFoundException {
 
       List<Trainning> trainnings = new ArrayList<>();
@@ -101,8 +101,8 @@ public class TrainningController {
      return new ResponseEntity<>(trainningDTOs, HttpStatus.OK);
     }
 
-
-     @PostMapping
+    
+     @PostMapping(path = "/users/trainning")
      public ResponseEntity<TrainningDTO> create(@Valid @RequestBody TrainningDTO dto) {
          Trainning trainning = dto.convertDTOToEntity();
 
@@ -113,7 +113,7 @@ public class TrainningController {
         return new ResponseEntity<TrainningDTO>(returnValue, HttpStatus.CREATED);
      }
 
-     @PutMapping(value="/{id}")
+     @PutMapping(path = "/users/trainning/{id}")
      public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @Validated @RequestBody TrainningDTO dto) throws TrainningNotFoundException, 
      UserNotFoundException, ExercisesNotFoundException {
          
@@ -156,7 +156,7 @@ public class TrainningController {
          return new ResponseEntity<>(returnValue, HttpStatus.OK);
      }
 
-     @DeleteMapping(path = "/{id}")
+     @DeleteMapping(path = "/admin/trainning/{id}")
      public ResponseEntity<TrainningDTO> delete(@PathVariable int id) throws TrainningNotFoundException {
         //Busca se o treino passado pelo Id existe no banco
         Optional<Trainning> getTrainning = trainningRepository.findById(id);
