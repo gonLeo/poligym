@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import com.poligym.dto.UsersDTO;
 import com.poligym.models.Users;
 import com.poligym.repository.UserRepository;
+import com.poligym.utils.security.BcryptUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,10 +29,17 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping(value = "/protected/user")
+    @PostMapping(value = "/user/create")
     public ResponseEntity<UsersDTO> create(@Valid @RequestBody UsersDTO dto) {
 
         Users user = dto.convertDTOToEntity();
+
+        String password = BcryptUtils.getHash(user.getPassword());
+
+        System.out.println("SENHA: " + password);
+
+        user.setPassword(password);
+        
         Users newUser = userRepository.save(user);
 
         UsersDTO returnValue = newUser.convertEntityToDTO();
@@ -39,7 +47,7 @@ public class UserController {
         return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/protected/user/{id}")
+    @GetMapping(value = "/user/{id}")
     public ResponseEntity<UsersDTO> getUserDetail(@PathVariable int id) throws Exception {
 
         if (userRepository.findById(id) == null) {
@@ -54,7 +62,7 @@ public class UserController {
 
     }
 
-    @PutMapping(value = "/admin/user/{id}")
+    @PutMapping(value = "/user/{id}")
     public ResponseEntity<UsersDTO> updateUser(@PathVariable int id, @RequestBody UsersDTO dto) {
 
         if (userRepository.findById(id) == null) {

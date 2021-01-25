@@ -9,12 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.poligym.models.Users;
+import com.poligym.models.Login;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import io.jsonwebtoken.Jwts;
@@ -22,6 +24,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     // Injetando dependencias
@@ -34,9 +37,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             throws AuthenticationException {
 
         try {
-            Users user = new ObjectMapper().readValue(request.getInputStream(), Users.class);
-            return this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+            Login login = new ObjectMapper().readValue(request.getInputStream(), Login.class);
+            // System.out.println("LOGIN ATTEMP: " + request);
+            return this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
         } catch (IOException e) {
+            // System.out.println("PUTZZZZ ERREIIII");
             throw new RuntimeException(e);
         }
     }
@@ -44,9 +49,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
             Authentication authResult) throws IOException, ServletException {
-                String users = ((Users) authResult.getPrincipal()).getEmail();
+                String username = ((UserDetails) authResult.getPrincipal()).getUsername();
+                System.out.println("SUCESSO");
+                System.out.println("LOGIN " + username);
                 String token = Jwts.builder()
-                                  .setSubject(users)
+                                  .setSubject(username)
                                   .setExpiration(new Date(System.currentTimeMillis() + com.poligym.config.SecurityConstants.EXPIRATION_TIME))
                                   .signWith(SignatureAlgorithm.HS512, com.poligym.config.SecurityConstants.SECRET)
                                   .compact();

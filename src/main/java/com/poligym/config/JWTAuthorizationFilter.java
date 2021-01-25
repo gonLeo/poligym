@@ -54,6 +54,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
                             .getSubject();
         UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(userEmail);
 
-        return userEmail != null ? new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()) : null;
+        //System.out.println("PEGANDO O USER DETAILS: " + userDetails);
+
+        return userEmail != null ? new UsernamePasswordAuthenticationToken(userEmail, null, userDetails.getAuthorities()) : null;
     }
 }

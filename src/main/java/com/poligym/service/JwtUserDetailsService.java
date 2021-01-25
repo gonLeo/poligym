@@ -29,6 +29,8 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         if (user.isPresent()) {
             Users userEntity = user.get();
+            // System.out.println("PEGANDO O USER: " + userEntity);
+            List<GrantedAuthority> authorityListUsers = AuthorityUtils.createAuthorityList("ROLE_USER");
             List<GrantedAuthority> authorityListAdmin = AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN");
 
             return new org.springframework.security.core.userdetails.User(userEntity.getEmail(),
