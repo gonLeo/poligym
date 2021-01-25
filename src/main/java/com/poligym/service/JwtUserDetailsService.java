@@ -12,7 +12,9 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class JwtUserDetailsService implements UserDetailsService {
 
     @Autowired
@@ -25,15 +27,15 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<Users> user = userRepository.findByEmail(email);
 
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             Users userEntity = user.get();
             List<GrantedAuthority> authorityListAdmin = AuthorityUtils.createAuthorityList("ROLE_USER", "ROLE_ADMIN");
 
-            return new org.springframework.security.core.userdetails.User(userEntity.getEmail(), userEntity.getPassword(), authorityListAdmin); 
-        }
-        else {
+            return new org.springframework.security.core.userdetails.User(userEntity.getEmail(),
+                    userEntity.getPassword(), authorityListAdmin);
+        } else {
             throw new UsernameNotFoundException("User not found.");
         }
     }
-    
+
 }

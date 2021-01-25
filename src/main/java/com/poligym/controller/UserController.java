@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/users")
+@RequestMapping(path = "/v1")
 public class UserController {
     private UserRepository userRepository;
 
@@ -28,7 +28,7 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping
+    @PostMapping(value = "/protected/user")
     public ResponseEntity<UsersDTO> create(@Valid @RequestBody UsersDTO dto) {
 
         Users user = dto.convertDTOToEntity();
@@ -39,7 +39,7 @@ public class UserController {
         return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/protected/user/{id}")
     public ResponseEntity<UsersDTO> getUserDetail(@PathVariable int id) throws Exception {
 
         if (userRepository.findById(id) == null) {
@@ -54,7 +54,7 @@ public class UserController {
 
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/admin/user/{id}")
     public ResponseEntity<UsersDTO> updateUser(@PathVariable int id, @RequestBody UsersDTO dto) {
 
         if (userRepository.findById(id) == null) {
@@ -75,7 +75,7 @@ public class UserController {
 
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/admin/user/{id}")
     public ResponseEntity<Users> updateUser(@PathVariable int id) {
         try {
             userRepository.deleteById(id);
