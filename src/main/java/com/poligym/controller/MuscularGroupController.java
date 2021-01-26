@@ -36,7 +36,7 @@ public class MuscularGroupController {
     }).orElse(ResponseEntity.notFound().build());
   }
 
-  @GetMapping(path = "/users/muscular-groups/{id}")
+  @GetMapping(path = "/users/muscular-group")
   public List<MuscularGroupDTO> index() {
     List<MuscularGroup> muscularGroups = muscularGroupRepository.findAll().stream()
         .filter(muscularGroupData -> muscularGroupData.getRemovedAt() == null).collect(Collectors.toList());
@@ -52,7 +52,7 @@ public class MuscularGroupController {
     return muscularGroupDTOs;
   }
 
-  @GetMapping(path = "/users/muscular-group")
+  @GetMapping(path = "/users/muscular-group/all")
   public List<MuscularGroupDTO> indexAll() {
     List<MuscularGroup> muscularGroups = muscularGroupRepository.findAll();
 
