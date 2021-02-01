@@ -2,13 +2,15 @@ package com.poligym.controller;
 
 import javax.validation.Valid;
 
-import com.poligym.dto.UserDTO;
-import com.poligym.models.User;
+import com.poligym.dto.UsersDTO;
+import com.poligym.models.Users;
 import com.poligym.repository.UserRepository;
+import com.poligym.utils.security.BcryptUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/users")
+@RequestMapping(path = "/v1")
 public class UserController {
     private UserRepository userRepository;
 
@@ -28,25 +30,29 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping
-    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO dto) {
+    @PostMapping(value = "/create")
+    public ResponseEntity<UsersDTO> create(@Valid @RequestBody UsersDTO dto) {
 
-        User user = dto.convertDTOToEntity();
-        User newUser = userRepository.save(user);
+        Users user = dto.convertDTOToEntity();
 
-        UserDTO returnValue = newUser.convertEntityToDTO();
+        String password = BcryptUtils.getHash(user.getPassword());
+        user.setPassword(password);
+        
+        Users newUser = userRepository.save(user);
+
+        UsersDTO returnValue = newUser.convertEntityToDTO();
 
         return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> getUserDetail(@PathVariable int id) throws Exception {
+    @GetMapping(path = "/users/{id}")
+    public ResponseEntity<UsersDTO> getUserDetail(@PathVariable int id) throws Exception {
 
         if (userRepository.findById(id) == null) {
             return ResponseEntity.notFound().build();
         } else {
-            User userDetails = userRepository.findById(id);
-            UserDTO userDto = new UserDTO();
+            Users userDetails = userRepository.findById(id);
+            UsersDTO userDto = new UsersDTO();
             userDto = userDetails.convertEntityToDTO();
 
             return new ResponseEntity<>(userDto, HttpStatus.OK);
@@ -54,13 +60,13 @@ public class UserController {
 
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable int id, @RequestBody UserDTO dto) {
+    @PutMapping(path = "/users/{id}")
+    public ResponseEntity<UsersDTO> updateUser(@PathVariable int id, @RequestBody UsersDTO dto) {
 
         if (userRepository.findById(id) == null) {
             return ResponseEntity.notFound().build();
         } else {
-            User user = userRepository.findById(id);
+            Users user = userRepository.findById(id);
             user.setName(dto.getName());
             user.setEmail(dto.getEmail());
             user.setPassword(dto.getPassword());
@@ -68,20 +74,21 @@ public class UserController {
             user.setRegistrationDate(dto.getRegistrationDate());
             user.setMedicalCertificateValidate(dto.getMedicalCertificateValidate());
 
-            UserDTO userUpdated = userRepository.save(user).convertEntityToDTO();
+            UsersDTO userUpdated = userRepository.save(user).convertEntityToDTO();
 
             return new ResponseEntity<>(userUpdated, HttpStatus.OK);
         }
 
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id) {
+    @DeleteMapping(path = "/admin/users/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Users> updateUser(@PathVariable int id) {
         try {
             userRepository.deleteById(id);
-            return new ResponseEntity<User>(HttpStatus.OK);
+            return new ResponseEntity<Users>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
         }
     }
 
