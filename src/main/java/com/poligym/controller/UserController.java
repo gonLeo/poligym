@@ -20,7 +20,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
+@Api(value = "User")
 @RequestMapping(path = "/v1")
 public class UserController {
     private UserRepository userRepository;
@@ -29,7 +33,8 @@ public class UserController {
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
+    
+    @ApiOperation(value = "Create a user")    
     @PostMapping(value = "/create")
     public ResponseEntity<UsersDTO> create(@Valid @RequestBody UsersDTO dto) {
 
@@ -45,6 +50,7 @@ public class UserController {
         return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "List a user")    
     @GetMapping(path = "/users/{id}")
     public ResponseEntity<UsersDTO> getUserDetail(@PathVariable int id) throws Exception {
 
@@ -59,7 +65,8 @@ public class UserController {
         }
 
     }
-
+    
+    @ApiOperation(value = "Change a user")    
     @PutMapping(path = "/users/{id}")
     public ResponseEntity<UsersDTO> updateUser(@PathVariable int id, @RequestBody UsersDTO dto) {
 
@@ -80,6 +87,7 @@ public class UserController {
         }
 
     }
+    @ApiOperation(value = "Delete a user")        
 
     @DeleteMapping(path = "/admin/users/{id}")
     @PreAuthorize("hasRole('ADMIN')")
