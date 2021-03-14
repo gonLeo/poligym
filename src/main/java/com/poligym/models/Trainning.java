@@ -49,7 +49,7 @@ public class Trainning extends EntityBase {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "users_id", nullable = false, referencedColumnName = "id")
   @JsonBackReference
-  private User users;
+  private Users users;
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "exercises_id", nullable = false, referencedColumnName = "id")

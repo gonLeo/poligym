@@ -26,14 +26,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/muscular-group")
 @Api(value = "MuscularGroup")
+@RequestMapping("/v1")
 public class MuscularGroupController {
 
   @Autowired
   MuscularGroupRepository muscularGroupRepository;
   @ApiOperation(value = "Get a muscular group")
-  @GetMapping(value = "/{id}")
+  @GetMapping(path = "/users/muscular-group/{id}")
   public ResponseEntity<MuscularGroupDTO> show(@PathVariable Integer id) {
     return muscularGroupRepository.findById(id).map(muscularGroup -> {
       MuscularGroupDTO returnValue = muscularGroup.convertEntityToDTO();
@@ -41,8 +41,8 @@ public class MuscularGroupController {
     }).orElse(ResponseEntity.notFound().build());
   }
 
-  @ApiOperation(value = "Get all not deleted muscular group")
-  @GetMapping()
+  @ApiOperation(value = "Get all not deleted muscular group")  
+  @GetMapping(path = "/users/muscular-group")
   public List<MuscularGroupDTO> index() {
     List<MuscularGroup> muscularGroups = muscularGroupRepository.findAll().stream()
         .filter(muscularGroupData -> muscularGroupData.getRemovedAt() == null).collect(Collectors.toList());
@@ -58,8 +58,8 @@ public class MuscularGroupController {
     return muscularGroupDTOs;
   }
 
-  @ApiOperation(value = "Get all muscular group")
-  @GetMapping(value = "/all")
+  @ApiOperation(value = "Get all muscular group")  
+  @GetMapping(path = "/users/muscular-group/all")
   public List<MuscularGroupDTO> indexAll() {
     List<MuscularGroup> muscularGroups = muscularGroupRepository.findAll();
 
@@ -74,8 +74,8 @@ public class MuscularGroupController {
     return muscularGroupDTOs;
   }
 
-  @ApiOperation(value = "Create a muscular group")
-  @PostMapping()
+  @ApiOperation(value = "Create a muscular group")  
+  @PostMapping(path = "/users/muscular-group")
   public ResponseEntity<MuscularGroupDTO> save(@RequestBody MuscularGroupDTO muscularGroupDTO) {
 
     try {
@@ -89,8 +89,8 @@ public class MuscularGroupController {
 
   }
   
-  @ApiOperation(value = "Update a muscular group")
-  @PutMapping(path = "/{id}")
+  @ApiOperation(value = "Update a muscular group")  
+  @PutMapping(path = "/users/muscular-group/{id}")
   public ResponseEntity<MuscularGroupDTO> update(@RequestBody MuscularGroupDTO muscularGroupDTO,
       @PathVariable Integer id) {
 
@@ -104,8 +104,8 @@ public class MuscularGroupController {
     }).orElse(ResponseEntity.notFound().build());
   };
 
-  @ApiOperation(value = "Delete a muscular group")
-  @DeleteMapping(path = "/{id}")
+  @ApiOperation(value = "Delete a muscular group")  
+  @DeleteMapping(path = "/admin/muscular-group/{id}")
   public ResponseEntity<Optional<MuscularGroup>> update(@PathVariable Integer id) {
     try {
       muscularGroupRepository.deleteById(id);

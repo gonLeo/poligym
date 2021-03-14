@@ -35,7 +35,7 @@ public class UserPresence extends EntityBase {
     @OneToOne()
     @JoinColumn(name = "users_id", nullable = false, referencedColumnName = "id")
     @JsonBackReference
-    private User users;
+    private Users users;
 
     @OneToOne()
     @JoinColumn(name = "section_id", nullable = false, referencedColumnName = "id")

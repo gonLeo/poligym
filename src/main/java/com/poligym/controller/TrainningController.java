@@ -12,7 +12,6 @@ import com.poligym.exception.TrainningNotFoundException;
 import com.poligym.exception.UserNotFoundException;
 import com.poligym.models.Exercises;
 import com.poligym.models.Trainning;
-import com.poligym.models.User;
 import com.poligym.repository.ExercisesRepository;
 import com.poligym.repository.TrainningRepository;
 import com.poligym.repository.UserRepository;
@@ -43,8 +42,8 @@ import org.springframework.web.bind.annotation.PathVariable;
  */
 
 @RestController
-@RequestMapping(path = "/trainning")
 @Api(value = "Trainning")
+@RequestMapping(path = "/v1")
 public class TrainningController {
 
    @Autowired
@@ -60,9 +59,9 @@ public class TrainningController {
    public TrainningController(TrainningRepository trainningRepository) {
       this.trainningRepository = trainningRepository;
    }
-   
+
    @ApiOperation(value = "List all trainnings")
-   @GetMapping
+   @GetMapping(path = "/users/trainning")
    public ResponseEntity<List<TrainningDTO>> getAllTrains() throws TrainningNotFoundException {
 
       List<Trainning> trainnings = new ArrayList<>();
@@ -85,7 +84,7 @@ public class TrainningController {
    }
 
    @ApiOperation(value = "List a user trainning")
-   @GetMapping(value = "/{usersId}")
+   @GetMapping(path = "/users/trainning/{usersId}")
    public ResponseEntity<List<TrainningDTO>> getTrainByUser(@PathVariable int usersId)
          throws TrainningNotFoundException {
 
@@ -106,9 +105,10 @@ public class TrainningController {
 
       return new ResponseEntity<>(trainningDTOs, HttpStatus.OK);
    }
-   
+
    @ApiOperation(value = "Create a trainning")
-   @PostMapping
+
+   @PostMapping(path = "/users/trainning")
    public ResponseEntity<TrainningDTO> create(@Valid @RequestBody TrainningDTO dto) {
       Trainning trainning = dto.convertDTOToEntity();
 
@@ -120,7 +120,7 @@ public class TrainningController {
    }
 
    @ApiOperation(value = "Change a trainning")
-   @PutMapping(value = "/{id}")
+   @PutMapping(path = "/users/trainning/{id}")
    public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @Validated @RequestBody TrainningDTO dto)
          throws TrainningNotFoundException, UserNotFoundException, ExercisesNotFoundException {
 
@@ -134,9 +134,7 @@ public class TrainningController {
       // Precisamos verificar se o treino que o usuario esta tentando atualizar,
       // contém os dados corretos no banco, como:
       // Verificar se o User existe
-      User getUser = userRepository.findById(dto.getUsersId());
-
-      if (getUser == null) {
+      if (userRepository.findById(dto.getUsersId()) == null) {
          throw new UserNotFoundException("User not found");
       }
 
@@ -166,17 +164,18 @@ public class TrainningController {
    }
 
    @ApiOperation(value = "Delete a trainning")
-   @DeleteMapping(path = "/{id}")
+   @DeleteMapping(path = "/admin/trainning/{id}")
    public ResponseEntity<TrainningDTO> delete(@PathVariable int id) throws TrainningNotFoundException {
       // Busca se o treino passado pelo Id existe no banco
       Optional<Trainning> getTrainning = trainningRepository.findById(id);
 
-      if (!getTrainning.isPresent()) {
-         throw new TrainningNotFoundException("Train not found");
+      if (getTrainning.isPresent()) {
+         trainningRepository.deleteById(id);
+         return new ResponseEntity<TrainningDTO>(HttpStatus.OK);
+      } else {
+         return ResponseEntity.notFound().build();
       }
 
-      trainningRepository.deleteById(id);
-      return new ResponseEntity<TrainningDTO>(HttpStatus.OK);
    }
 
 }

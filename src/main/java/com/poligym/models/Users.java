@@ -9,23 +9,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.poligym.dto.UserDTO;
+import com.poligym.dto.UsersDTO;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 import org.modelmapper.ModelMapper;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "Users")
 @Entity
-
-public class User extends EntityBase {
+public class Users extends EntityBase {
     private static final long serialVersionUID = 1L;
 
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,7 +31,7 @@ public class User extends EntityBase {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)
@@ -51,7 +46,10 @@ public class User extends EntityBase {
     @Column(name = "medicalCertificateValidate", nullable = false)
     private Date medicalCertificateValidate;
 
-    public UserDTO convertEntityToDTO() {
-        return new ModelMapper().map(this, UserDTO.class);
+    @Column(name = "admin", columnDefinition = "boolean default false", nullable = false)
+    private boolean admin;
+
+    public UsersDTO convertEntityToDTO() {
+        return new ModelMapper().map(this, UsersDTO.class);
     }
 }
