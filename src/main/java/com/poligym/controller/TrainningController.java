@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -41,6 +44,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping(path = "/trainning")
+@Api(value = "Trainning")
 public class TrainningController {
 
    @Autowired
@@ -56,8 +60,8 @@ public class TrainningController {
    public TrainningController(TrainningRepository trainningRepository) {
       this.trainningRepository = trainningRepository;
    }
-
-   // Listar todos os treinos
+   
+   @ApiOperation(value = "List all trainnings")
    @GetMapping
    public ResponseEntity<List<TrainningDTO>> getAllTrains() throws TrainningNotFoundException {
 
@@ -80,7 +84,7 @@ public class TrainningController {
       return new ResponseEntity<>(trainningDTOs, HttpStatus.OK);
    }
 
-   // Listar treino de usuario especifico
+   @ApiOperation(value = "List a user trainning")
    @GetMapping(value = "/{usersId}")
    public ResponseEntity<List<TrainningDTO>> getTrainByUser(@PathVariable int usersId)
          throws TrainningNotFoundException {
@@ -102,7 +106,8 @@ public class TrainningController {
 
       return new ResponseEntity<>(trainningDTOs, HttpStatus.OK);
    }
-
+   
+   @ApiOperation(value = "Create a trainning")
    @PostMapping
    public ResponseEntity<TrainningDTO> create(@Valid @RequestBody TrainningDTO dto) {
       Trainning trainning = dto.convertDTOToEntity();
@@ -114,6 +119,7 @@ public class TrainningController {
       return new ResponseEntity<TrainningDTO>(returnValue, HttpStatus.CREATED);
    }
 
+   @ApiOperation(value = "Change a trainning")
    @PutMapping(value = "/{id}")
    public ResponseEntity<TrainningDTO> upate(@PathVariable int id, @Validated @RequestBody TrainningDTO dto)
          throws TrainningNotFoundException, UserNotFoundException, ExercisesNotFoundException {
@@ -159,6 +165,7 @@ public class TrainningController {
       return new ResponseEntity<>(returnValue, HttpStatus.OK);
    }
 
+   @ApiOperation(value = "Delete a trainning")
    @DeleteMapping(path = "/{id}")
    public ResponseEntity<TrainningDTO> delete(@PathVariable int id) throws TrainningNotFoundException {
       // Busca se o treino passado pelo Id existe no banco

@@ -18,8 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(path = "/users")
+@Api(value = "User")
 public class UserController {
     private UserRepository userRepository;
 
@@ -27,7 +31,8 @@ public class UserController {
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
+    
+    @ApiOperation(value = "Create a user")
     @PostMapping
     public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO dto) {
 
@@ -39,6 +44,7 @@ public class UserController {
         return new ResponseEntity<>(returnValue, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "List a user")
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserDTO> getUserDetail(@PathVariable int id) throws Exception {
 
@@ -53,7 +59,8 @@ public class UserController {
         }
 
     }
-
+    
+    @ApiOperation(value = "Change a user")
     @PutMapping(value = "/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable int id, @RequestBody UserDTO dto) {
 
@@ -74,7 +81,7 @@ public class UserController {
         }
 
     }
-
+    @ApiOperation(value = "Delete a user")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<User> updateUser(@PathVariable int id) {
         try {
